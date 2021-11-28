@@ -1,0 +1,9 @@
+.form {
+    &_select {
+        max-width: 300px;
+        width: 100%;
+    }
+    &_error {
+        color: rgb(231, 56, 56);
+    }
+}
