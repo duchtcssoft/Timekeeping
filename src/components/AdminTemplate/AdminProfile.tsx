@@ -42,15 +42,19 @@ export default function AdminProfile() {
   };
 
   const menu = (
-    <Menu>
+    <Menu style={{ borderRadius: "5px" }}>
       <Menu.Item key="0" className={classes.menu_item}>
         <GlobalOutlined />
-        <span className={classes.list_item}>Language</span>
+        <span style={{ marginLeft: "10px" }} className={classes.list_item}>
+          Language
+        </span>
       </Menu.Item>
       <Menu.Item key="1" className={classes.menu_item}>
         <div onClick={handleLogoutClick}>
           <LogoutOutlined />
-          <span className={classes.list_item}>Sign out</span>
+          <span style={{ marginLeft: "10px" }} className={classes.list_item}>
+            Sign out
+          </span>
         </div>
       </Menu.Item>
     </Menu>

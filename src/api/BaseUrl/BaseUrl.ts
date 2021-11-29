@@ -1,2 +1,2 @@
-const BASE_URL = "http://0c22-8-21-11-175.ngrok.io/api";
+const BASE_URL = "http://8cb2-222-252-111-207.ngrok.io/api";
 export default BASE_URL;

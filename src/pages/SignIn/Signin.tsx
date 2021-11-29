@@ -3,6 +3,8 @@
 import BASE_URL from "@/api/BaseUrl/BaseUrl";
 import Banner from "@/components/banner/Banner";
 import { ROUTES } from "@/constants/routers";
+import ReactHookForm from "@/providers/ReactHookForm";
+import { schemaSignin } from "@/react-hook-form/validations/Signin";
 import { message, Result } from "antd";
 import axios from "axios";
 import { access } from "fs";
@@ -43,8 +45,10 @@ export default function Signin() {
 
   return (
     <div className={classes.wrapper}>
-      <Banner title="Sign in to explore more about app" />
-      <SignInForm onFinish={onFinish} />
+      <ReactHookForm validateSchema={schemaSignin}>
+        <Banner title="Sign in to explore more about app" />
+        <SignInForm onFinish={onFinish} />
+      </ReactHookForm>
     </div>
   );
 }

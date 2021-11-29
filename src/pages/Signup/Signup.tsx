@@ -32,7 +32,7 @@ export default function Signup() {
     })
       .then((res) => {
         console.log("res: ==", res);
-        message.success("Create account coplete");
+        message.success("Create account complete");
         history.replace(ROUTES.SIGN_IN);
       })
       .catch((err) => {
