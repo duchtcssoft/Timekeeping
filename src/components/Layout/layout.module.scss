@@ -1,0 +1,43 @@
+.trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  margin: 0;
+  padding: 44px 3px;
+  cursor: pointer;
+}
+
+.site_layout .site_layout_bg {
+  background: #ffffff;
+}
+
+.logo_img {
+  width: 40px;
+  height: 40px;
+  margin-top: 20px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.logo_title {
+  color: #ffffff;
+  font-size: 24px;
+}
+
+.header-layout {
+  padding: 0 24px;
+}
