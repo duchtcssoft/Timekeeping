@@ -23,6 +23,6 @@ type ShallowExpand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 /**
  * Any Object - extends type any
  */
-interface AnyObj<PropertiesType = any> {
+interface AnyObject<PropertiesType = any> {
   [key: string]: PropertiesType;
 }
