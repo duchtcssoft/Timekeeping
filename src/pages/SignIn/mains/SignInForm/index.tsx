@@ -6,7 +6,6 @@ import { useTypedForm } from "@/hooks/useTypedForm";
 import SubmitBtn from "../../components/SubmitBtn";
 // others
 import classes from "./SignInForm.module.scss";
-import Example from "../Example";
 
 /**
  * SignInForm
@@ -36,7 +35,6 @@ export default function SignInForm() {
           />
         </div>
         <SubmitBtn />
-        <Example />
       </form>
     </div>
   );

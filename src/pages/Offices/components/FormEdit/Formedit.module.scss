@@ -1,0 +1,11 @@
+.form_item{
+    display: block;
+    margin-bottom: 20px;
+    width: 100%;
+    &:not(:first-child){
+        margin-left: 10px;
+    }
+}
+.form_field{
+display: flex;
+}
