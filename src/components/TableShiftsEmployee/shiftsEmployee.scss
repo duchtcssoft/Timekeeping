@@ -1,30 +1,23 @@
 .ShiftsEmployee-wrapper {
-  .header-shiftEmployee {
+  .header-shiftEmployeeRight {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin: 10px;
-    h3 {
-      margin: 0;
-      font-weight: bold;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    .Search {
+      width: 200px;
+      margin: 0 10px;
     }
-    .header-shiftEmployeeRight {
+    .pagination {
+      width: 31px;
+      height: 31px;
       display: flex;
       align-items: center;
-      span {
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        background-color: rgb(184, 181, 181);
-        border-radius: 2px;
-        cursor: pointer;
-        svg {
-          margin: auto;
-        }
-      }
-      input {
-        margin-left: 10px;
+      background-color: rgb(184, 181, 181);
+      border-radius: 2px;
+      cursor: pointer;
+      svg {
+        margin: auto;
       }
     }
   }

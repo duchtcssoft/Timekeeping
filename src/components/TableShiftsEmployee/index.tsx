@@ -4,6 +4,9 @@ import React from "react";
 import "./shiftsEmployee.scss";
 import { LeftOutlined, RightOutlined, PlusOutlined } from "@ant-design/icons";
 import ModalAddShiftsEmployee from "../AddShiftsEmployee/modalAddShiftsEmployee";
+import { Input, Select } from "antd";
+
+const { Search } = Input;
 
 const data = [
   {
@@ -32,24 +35,23 @@ const data = [
     shifts: "Ca 1",
   },
 ];
+
+const onSearch = (value: any) => console.log(value);
 function TableShiftsEmployee() {
   return (
     <>
       <div className="ShiftsEmployee-wrapper">
-        <div className="header-shiftEmployee">
-          <h3>20/10/2021-30/10/2021 </h3>
-          <div className="header-shiftEmployeeRight">
-            <LeftOutlined />
-            <RightOutlined />
-            <input
-              type="date"
-              id="start"
-              name="trip-start"
-              value="2021-11-22"
-              min="2021-11-22"
-              max="2030-11-22"
+        <div className="header-shiftEmployeeRight">
+          <div className="Search">
+            <Search
+              placeholder="Tên ca làm việc"
+              onSearch={onSearch}
+              enterButton
             />
           </div>
+          <ModalAddShiftsEmployee />
+          <LeftOutlined className="pagination" />
+          <RightOutlined className="pagination" />
         </div>
         <div className="content-shiftEmployee">
           <table>
@@ -57,34 +59,7 @@ function TableShiftsEmployee() {
               <tr className="table-title">
                 <th className="table-text">STT</th>
                 <th className="table-text">Nhân Viên</th>
-                <th className="table-text">
-                  22/11/2021
-                  <ModalAddShiftsEmployee />
-                </th>
-                <th className="table-text">
-                  23/11/2021
-                  <ModalAddShiftsEmployee />
-                </th>
-                <th className="table-text">
-                  24/11/2021
-                  <ModalAddShiftsEmployee />
-                </th>
-                <th className="table-text">
-                  25/11/2021
-                  <ModalAddShiftsEmployee />
-                </th>
-                <th className="table-text">
-                  26/11/2021
-                  <ModalAddShiftsEmployee />
-                </th>
-                <th className="table-text">
-                  27/11/2021
-                  <ModalAddShiftsEmployee />
-                </th>
-                <th className="table-text">
-                  28/11/2021
-                  <ModalAddShiftsEmployee />
-                </th>
+                <th className="table-text">Ca làm việc</th>
               </tr>
             </thead>
             <tbody>
@@ -101,12 +76,6 @@ function TableShiftsEmployee() {
                     {index.name}
                   </td>
                   <td>{index.shifts}</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
                 </tr>
               ))}
             </tbody>

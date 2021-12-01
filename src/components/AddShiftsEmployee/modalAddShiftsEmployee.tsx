@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Checkbox, Switch, Select } from "antd";
+import { Modal, Checkbox, Switch, Select, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import "./AddShiftEmployee.scss";
 
@@ -24,7 +24,14 @@ const ModalAddShiftsEmployee = () => {
   //   };
   return (
     <>
-      <PlusOutlined onClick={showModal} />
+      <Button
+        type="primary"
+        style={{ margin: "0 10px" }}
+        onClick={showModal}
+        icon={<PlusOutlined />}
+      >
+        Thêm ca làm việc
+      </Button>
       <Modal
         className="ModalAdd"
         title="Thêm ca làm việc cho nhân viên"
@@ -69,7 +76,7 @@ const ModalAddShiftsEmployee = () => {
         </div>
         <div className="Note">
           <p>Ghi chú: </p>
-          <textarea id="w3review" name="w3review"></textarea>
+          <textarea id="w3review" name="w3review" style={{ width: "100%" }} />
         </div>
       </Modal>
     </>
