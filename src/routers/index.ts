@@ -10,6 +10,7 @@ import ForgotPassword from "@/pages/ForgotPassword/ForgotPassword";
 // pages
 import Signin from "@/pages/SignIn/Signin";
 import Signup from "@/pages/Signup/Signup";
+import TimeKeeping from "@/pages/Home/TimeKeeping/TimeKeeping";
 
 /**
  * define main pages routes
@@ -54,6 +55,11 @@ const appRoutes = [
     path: ROUTES.CHANGE_PASSWORD,
     exact: true,
     component: ChangePassword,
+  },
+  {
+    path: ROUTES.TIME_KEEPING,
+    exact: true,
+    component: TimeKeeping,
   },
 ];
 

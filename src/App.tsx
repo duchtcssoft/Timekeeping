@@ -22,8 +22,6 @@ export default function App() {
             <CssBaseline />
 
             <Switch>
-              {/* <Redirect exact from="/" to={ROUTES.SIGN_IN} /> */}
-
               {appRoutes.map((route) => (
                 <Route
                   key={route.path}

@@ -1,17 +1,24 @@
 import { ROUTES } from "@/constants/routers";
+import { InputField } from "@/custom-field/InputField/InputField";
+import { useTypedForm } from "@/hooks/useTypedForm";
 import { UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
+import { Controller } from "react-hook-form";
 import { Link } from "react-router-dom";
 import classes from "./ForgotPasswordForm.module.scss";
 
 export default function ForgotPasswordForm(props: any) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useTypedForm("ForgotPassword");
+
   return (
     <div className={classes.wrapper}>
-      <Form
-        name="normal_login"
+      <form
         className={classes.forgotPasswordForm}
-        initialValues={{ remember: true }}
-        onFinish={props.onFinish}
+        onSubmit={handleSubmit(props.onSubmit)}
       >
         <h3
           style={{
@@ -21,36 +28,46 @@ export default function ForgotPasswordForm(props: any) {
             fontSize: "20px",
           }}
         >
-          Forgot Password
+          Quên Mật Khẩu
         </h3>
         <p>
-          Enter your email. <br /> We will send new password to your email.
+          Nhập email đăng ký. Chúng tôi sẽ gửi 1 đường dẫn đến email của bạn để
+          đổi mật khẩu mới.
         </p>
-        <Form.Item
-          className="form-item"
-          name={["user", "email"]}
-          rules={[{ type: "email" }]}
-        >
-          <Input
-            size="large"
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Enter your email"
+        <InputField label="Email" isRequired>
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                className={classes.form_item}
+                size="large"
+                placeholder="Nhập email của bạn"
+                type="email"
+              />
+            )}
           />
-        </Form.Item>
-        <Form.Item>
+          {errors.email && (
+            <span className={classes.required}>{errors.email.message}</span>
+          )}
+        </InputField>
+
+        <Form.Item style={{ display: "block" }}>
           <Button
-            style={{ width: "100%", marginBottom: "20px" }}
+            style={{ width: "100%", margin: "20px 0" }}
             type="primary"
             htmlType="submit"
             className="login-form-button"
+            loading={props.loading}
           >
-            Send
+            Gửi
           </Button>
           <Link style={{ textDecoration: "underline" }} to={ROUTES.SIGN_IN}>
-            Back
+            Quay lại
           </Link>
         </Form.Item>
-      </Form>
+      </form>
     </div>
   );
 }

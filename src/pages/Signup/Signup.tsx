@@ -3,10 +3,13 @@
 import BASE_URL from "@/api/BaseUrl/BaseUrl";
 import Banner from "@/components/banner/Banner";
 import { ROUTES } from "@/constants/routers";
+import ReactHookForm from "@/providers/ReactHookForm";
+import { schemaSignup } from "@/react-hook-form/validations/Signup";
 import { message } from "antd";
 import axios from "axios";
 import { useHistory } from "react-router";
 import SignupForm from "./mains/SignupForm/SignupForm";
+import { useState } from "react";
 // others
 import classes from "./Signup.module.scss";
 
@@ -14,18 +17,19 @@ import classes from "./Signup.module.scss";
  * Signin
  */
 export default function Signup() {
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
-  const onFinish = (values: any) => {
+  const onSubmit = (values: any) => {
     console.log(values);
-
+    setLoading(true);
     axios({
       method: "post",
       url: `${BASE_URL}/auth/register`,
       data: {
-        name: values.user.name,
-        email: values.user.email,
-        phone: values.user.phone,
-        address: values.user.address,
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        address: values.address,
         password: values.password,
         position: "1",
       },
@@ -50,12 +54,17 @@ export default function Signup() {
           // anything else
           // console.log("anything else: ", err);
         }
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   return (
     <div className={classes.wrapper}>
-      <Banner title="A few clicks away from creating your account" />
-      <SignupForm onFinish={onFinish} />
+      <Banner title="Tạo tài khoản dễ dàng, thiết lập công ty của bạn" />
+      <ReactHookForm validateSchema={schemaSignup}>
+        <SignupForm onSubmit={onSubmit} loading={loading} />
+      </ReactHookForm>
     </div>
   );
 }

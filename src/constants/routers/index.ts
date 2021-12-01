@@ -7,4 +7,5 @@ export const ROUTES = {
   SIGN_UP: "/signup",
   FORGOT_PASSWORD: "/forgotpassword",
   CHANGE_PASSWORD: "/changepassword",
+  TIME_KEEPING: "/timekeeping",
 };

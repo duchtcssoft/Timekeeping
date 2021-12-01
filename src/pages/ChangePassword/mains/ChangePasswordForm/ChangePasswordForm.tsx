@@ -1,20 +1,26 @@
 import { ROUTES } from "@/constants/routers";
-import { UserOutlined } from "@ant-design/icons";
+import { InputField } from "@/custom-field/InputField/InputField";
+import { useTypedForm } from "@/hooks/useTypedForm";
 import { Button, Form, Input } from "antd";
+import { Controller } from "react-hook-form";
 import { Link } from "react-router-dom";
 import classes from "./ChangePasswordForm.module.scss";
 
-export default function ChangePasswordForm() {
+export default function ChangePasswordForm(props: any) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useTypedForm("ChangePassword");
+
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values);
   };
   return (
     <div className={classes.wrapper}>
-      <Form
-        name="normal_login"
+      <form
         className={classes.forgotPasswordForm}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
+        onSubmit={handleSubmit(props.onSubmit)}
       >
         <h3
           style={{
@@ -24,47 +30,34 @@ export default function ChangePasswordForm() {
             fontSize: "20px",
           }}
         >
-          Create New Password
+          Tạo Mật Khẩu Mới
         </h3>
-        <Form.Item
-          style={{ display: "block" }}
-          className="form-item"
-          name="password"
-          label="New Password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password size="large" />
-        </Form.Item>
-        <Form.Item
-          style={{ display: "block" }}
-          className="form-item"
-          name="confirm"
-          label="Confirm Password"
-          dependencies={["password"]}
-          hasFeedback
-          rules={[
-            {
-              required: true,
-              message: "Please confirm your password!",
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue("password") === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject();
-              },
-            }),
-          ]}
-        >
-          <Input.Password size="large" />
-        </Form.Item>
+        <InputField label="Mật khẩu" isRequired>
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <Input {...field} type="password" size="large" />
+            )}
+          />
+          {errors.password && (
+            <span className={classes.required}>{errors.password.message}</span>
+          )}
+        </InputField>
+        <InputField label="Xác nhận mật khẩu" isRequired>
+          <Controller
+            name="confirmPassword"
+            control={control}
+            render={({ field }) => (
+              <Input {...field} type="password" size="large" />
+            )}
+          />
+          {errors.confirmPassword && (
+            <span className={classes.required}>
+              {errors.confirmPassword.message}
+            </span>
+          )}
+        </InputField>
         <Form.Item>
           <Button
             style={{ width: "100%", marginBottom: "20px" }}
@@ -72,13 +65,13 @@ export default function ChangePasswordForm() {
             htmlType="submit"
             className="login-form-button"
           >
-            Submit
+            Xác Nhận
           </Button>
           <Link style={{ textDecoration: "underline" }} to={ROUTES.HOME}>
-            Home
+            Trang chủ
           </Link>
         </Form.Item>
-      </Form>
+      </form>
     </div>
   );
 }

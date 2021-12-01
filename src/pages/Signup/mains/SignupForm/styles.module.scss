@@ -12,9 +12,9 @@
   .ant-form-item-label {
     overflow: visible;
   }
-  .form-group {
+  .form_group {
     display: flex;
-    .form-item {
+    .form_item {
       display: block;
       width: 100%;
       &:not(:first-child) {
@@ -24,6 +24,11 @@
     .form-input {
       display: block;
       width: 300px;
+    }
+    .required {
+      font-size: 13px;
+      font-weight: 300;
+      color: red;
     }
   }
   .ant-col-16 {

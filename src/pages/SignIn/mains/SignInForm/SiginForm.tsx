@@ -3,17 +3,23 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import classes from "./SignInForm.module.scss";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/constants/routers";
+import { Controller } from "react-hook-form";
+import { useTypedForm } from "@/hooks/useTypedForm";
+import { InputField } from "@/custom-field/InputField/InputField";
 
 function SignInForm(props: any) {
+  const onChange = (e: any) => {
+    console.log(`checked = ${e.target.checked}`);
+  };
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useTypedForm("SignIn");
   return (
     <div className={classes.wrapper}>
-      <Form
-        style={{ width: "300px" }}
-        name="normal_login"
-        className="login-form"
-        initialValues={{ remember: true }}
-        onFinish={props.onFinish}
-      >
+      <form onSubmit={handleSubmit(props.onSubmit)}>
         <div className={classes.avatar}>
           <Avatar size="large" icon={<UserOutlined />} />
         </div>
@@ -25,69 +31,73 @@ function SignInForm(props: any) {
             fontSize: "20px",
           }}
         >
-          Sign In
+          Đăng Nhập
         </h3>
-        <Form.Item
-          className="form-item"
-          name={["user", "email"]}
-          rules={[
-            { type: "email" },
-            {
-              required: true,
-              message: "Please input your Email!",
-            },
-          ]}
-        >
-          <Input
-            size="large"
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Enter your email"
+        <InputField label="">
+          <Controller
+            name="username"
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                size="large"
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Nhập email của bạn"
+                type="email"
+              />
+            )}
           />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[
-            "email"
-              ? { required: true, message: "Please input your Password!" }
-              : { required: false },
-          ]}
-        >
-          <Input
-            size="large"
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            type="password"
-            placeholder="Password"
+          {errors.username && (
+            <span className={classes.required}>{errors.username.message}</span>
+          )}
+        </InputField>
+
+        <InputField label="">
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                size="large"
+                prefix={<LockOutlined className="site-form-item-icon" />}
+                placeholder="Nhập mật khẩu"
+                type="password"
+              />
+            )}
           />
-        </Form.Item>
-        <Form.Item>
-          <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-          <Link
-            to={ROUTES.FORGOT_PASSWORD}
-            style={{ float: "right" }}
-            className="login-form-forgot"
-            href=""
-          >
-            Forgot password
-          </Link>
-        </Form.Item>
-        <Form.Item>
+          {errors.password && (
+            <span className={classes.required}>{errors.password.message}</span>
+          )}
+        </InputField>
+
+        <InputField label="">
+          <Controller
+            name="remember"
+            control={control}
+            render={({ field }) => <Checkbox>Ghi nhớ đăng nhập</Checkbox>}
+          />
+        </InputField>
+        <Link to={ROUTES.FORGOT_PASSWORD} className="login-form-forgot" href="">
+          Quên mật khẩu
+        </Link>
+        <Form.Item style={{ display: "block" }}>
           <Button
+            loading={props.loading}
             // onClick={props.onClick}
             style={{ width: "100%", marginBottom: "20px" }}
             type="primary"
             htmlType="submit"
             className="login-form-button"
           >
-            Log in
+            Đăng Nhập
           </Button>
-          Don&#39;t have an account?{" "}
+          Chưa có tài khoản?&nbsp;
           <Link style={{ textDecoration: "underline" }} to={ROUTES.SIGN_UP}>
-            register now!
+            đăng ký ngay.
           </Link>
         </Form.Item>
-      </Form>
+      </form>
     </div>
   );
 }
