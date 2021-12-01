@@ -1,0 +1,10 @@
+.Setting {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+  align-items: center;
+  .Search {
+    width: 200px;
+    margin: 0 10px;
+  }
+}

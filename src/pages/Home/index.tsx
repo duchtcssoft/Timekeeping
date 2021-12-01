@@ -1,59 +1,87 @@
 // libs
-import { Button } from "@mui/material";
-import { useDispatch } from "react-redux";
-// hooks
-import { useRouter } from "@/hooks/router/useRouter";
-import { useStore } from "@/hooks/useStore";
-// actions
-import { updateMagicNumber } from "@/redux/actions/example";
-// others
-import { notify } from "@/utils/notify";
-import { ROUTES } from "@/constants/routers";
+import { Input, Select } from "antd";
+import "./setting.scss";
 
-// TODO: talk
+// hooks
+
+// others
+import MainLayout from "@/components/Layout/Layout";
+import TableSetting from "@/components/Table/TableSetting";
+import axios from "axios";
+import FormAddShifts from "@/components/TableAddShifts/FormAddShifts";
+import Cookie from "universal-cookie";
+import { useEffect, useState } from "react";
+
+const { Search } = Input;
+const cookie = new Cookie();
 
 /**
  * Home
  */
+function handleChange(value: any) {
+  console.log(`selected ${value}`);
+}
+
+const onSearch = (value: any) => console.log(value);
+async function getOffices() {
+  const token = cookie.get("token");
+  const tmp: any = [];
+  return axios
+    .get(`${process.env.REACT_APP_DOMAIN_URL}api/offices?page=1&limit=6`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      res.data.data.forEach((e: any) => {
+        tmp.push({ id: e.id, name: e.name });
+      });
+      return tmp;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 export default function Home() {
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const { magicNumber } = useStore("Home", "exampleReducer");
+  const { Option } = Select;
+  const [name, setName] = useState([]);
+  const [offices, setOffices] = useState([]);
+  const [officeId, setOfficeId] = useState("");
+  useEffect(() => {
+    getOffices().then((data) => {
+      setOffices(data);
+    });
+  }, []);
 
   return (
-    <h1>
-      <Button
-        onClick={() => {
-          router.push(ROUTES.SIGN_IN);
-        }}
-      >
-        Go to Sign in page
-      </Button>
-      <Button
-        onClick={() => {
-          notify.success("Success");
-        }}
-      >
-        Alert message success
-      </Button>
-      <Button
-        onClick={() => {
-          notify.error("Error");
-        }}
-      >
-        Alert message Error
-      </Button>
-      <Button
-        onClick={() => {
-          dispatch(
-            updateMagicNumber({
-              magicNumber: magicNumber * 3,
-            }),
-          );
-        }}
-      >
-        Update Magic Number (current-value: {magicNumber})
-      </Button>
-    </h1>
+    <MainLayout>
+      <div className="Setting">
+        <div className="Search">
+          <Search
+            placeholder="Tên ca làm việc"
+            onSearch={onSearch}
+            onChange={handleChange}
+            enterButton
+          />
+        </div>
+
+        <Select
+          style={{ width: 120 }}
+          onChange={(value) => {
+            setOfficeId(value);
+          }}
+          value={officeId}
+        >
+          {offices.map((e: any) => (
+            <Option value={e.id} name="office_id">
+              {e.name}
+            </Option>
+          ))}
+        </Select>
+        <FormAddShifts />
+      </div>
+      <TableSetting />
+    </MainLayout>
   );
 }
