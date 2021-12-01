@@ -81,7 +81,7 @@ const AbsenceForm = () => {
           name="description"
           control={control}
           render={({ field }) =>
-            <TextArea rows={4} />}
+            <TextArea rows={4} {...field} />}
         />
       </FormInput>
       <FormInput label="">

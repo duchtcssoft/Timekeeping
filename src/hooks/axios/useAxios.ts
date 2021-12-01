@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { ResponseProps } from "@/models/Axios/Axios";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;

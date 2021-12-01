@@ -22,3 +22,17 @@ export interface AbsenceProps {
   user?: number | string;
   description?: string;
 }
+
+export interface EmployeeModalProps {
+  employee: EmployeeProps | null;
+  visible?: boolean;
+  setVisible: (visible: boolean) => void;
+  setSuccess: (success: boolean) => void;
+}
+
+export interface EmployeeDeleteModalProps {
+  employee: EmployeeProps | null;
+  deleteVisible: boolean;
+  setSuccess: (success: boolean) => void;
+  setDeleteVisible: (visible: boolean) => void;
+}

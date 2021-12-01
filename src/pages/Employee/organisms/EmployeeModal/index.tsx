@@ -1,17 +1,13 @@
+import { EmployeeModalProps } from "@/models/Employee/EmployeeProps";
 import { Modal } from "antd";
 import EmployeeForm from "../EmployeeForm";
 
-interface EmployeeModalProps {
-  visible: boolean;
-  setVisible: (visible: boolean) => void;
-}
-
 const EmployeeModal = (props: EmployeeModalProps) => {
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     props.setVisible(false);
   };
-
+  // console.log("modal---", props.employee);
+  
   return (
     <>
       <Modal
@@ -21,7 +17,7 @@ const EmployeeModal = (props: EmployeeModalProps) => {
         footer={null}
         width={1000}
       >
-        <EmployeeForm />
+        <EmployeeForm employee={props.employee} setSuccess={props.setSuccess} setVisible={props.setVisible} visible={props.visible} />
       </Modal>
     </>
   );
