@@ -13,7 +13,7 @@ import { AXIOS_INSTANCE } from "@/https/AxiosInstance";
 import { defaultHttpError, defaultHttpSuccess } from "@/utils/https";
 
 /**
- * buildXHRgjhjnm
+ * buildXHR
  * @description build a like-useAsync-hook for request API
  * @param configs
  * @return React Hook for requesting API
