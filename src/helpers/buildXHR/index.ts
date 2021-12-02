@@ -26,13 +26,13 @@ import { defaultHttpError, defaultHttpSuccess } from "@/utils/https";
     access_token: string;
    };
    export const useRequestRegisterAccount = buildXHR<
-     RegisterRequest,
-     RegisterResponse
+     Request,
+     Response
    >({
      url: "/example/api/endpoint/",
      method: "POST",
    });
-   // Use
+   // Usage in React Component
      const { execute, isLoading, response } = useRequestRegisterAccount();
      execute({
        cbSuccess: (res) => {
