@@ -39,7 +39,6 @@ const EmployeeForm = (props: EmployeeModalProps) => {
       setValue("email", props.employee.email);
       setValue("phone", props.employee.phone);
       setDateBirth(moment(props.employee.date_of_birth, "YYYY-MM-DD"));
-      console.log(dateBirth);
     }
   }, [props.employee]);
 
