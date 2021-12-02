@@ -1,0 +1,48 @@
+.ShiftsEmployee-wrapper {
+  .header-shiftEmployeeRight {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    .Search {
+      width: 200px;
+      margin: 0 10px;
+    }
+    .pagination {
+      width: 31px;
+      height: 31px;
+      display: flex;
+      align-items: center;
+      background-color: rgb(184, 181, 181);
+      border-radius: 2px;
+      cursor: pointer;
+      svg {
+        margin: auto;
+      }
+    }
+  }
+  .content-shiftEmployee {
+    table {
+      width: 100%;
+      //   border: 1px solid black;
+    }
+    tr {
+      border: 1px solid rgb(114, 109, 109);
+    }
+    td,
+    th {
+      border: 1px solid rgb(114, 109, 109);
+      height: 50px;
+      text-align: center;
+    }
+    th {
+      background-color: #ccc;
+      span {
+        margin-left: 10px;
+        color: rgb(240, 44, 86);
+        font-size: 20px;
+        cursor: pointer;
+      }
+    }
+  }
+}

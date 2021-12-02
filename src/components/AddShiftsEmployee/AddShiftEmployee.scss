@@ -1,0 +1,21 @@
+.ModalAdd {
+  .SelectUser {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .checkboxGroup {
+    display: flex;
+    flex-direction: column;
+    .ant-checkbox-wrapper {
+      margin: 2px 5px;
+    }
+  }
+  .Note {
+    margin-top: 10px;
+    width: 100%;
+    p {
+      margin: 0;
+    }
+  }
+}
