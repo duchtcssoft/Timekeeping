@@ -18,7 +18,14 @@ import { defaultHttpError, defaultHttpSuccess } from "@/utils/https";
  * @param configs
  * @return React Hook for requesting API
  * @example
- * export const useRequestRegisterAccount = buildXHR<
+ * type Request = {
+    email: string;
+    password: string;
+   };
+   type Response = {
+    access_token: string;
+   };
+   export const useRequestRegisterAccount = buildXHR<
      RegisterRequest,
      RegisterResponse
    >({
@@ -27,7 +34,11 @@ import { defaultHttpError, defaultHttpSuccess } from "@/utils/https";
    });
    // Use
      const { execute, isLoading, response } = useRequestRegisterAccount();
-     execute();
+     execute({
+       cbSuccess: (res) => {
+         // This is on success callback
+       }
+     });
  */
 export const buildXHR = <
   TRequestData = AnyObject,
