@@ -18,11 +18,11 @@ import { defaultHttpError, defaultHttpSuccess } from "@/utils/https";
 });
   export const useGetUsersAction = buildAsyncAction({
       XHRHook: useGetUsers,
-      LOADING_LABEL: "...(REDUX_LABEL)"
-      SUCCESS_LABEL: "...(REDUX_LABEL)"
-      ERROR_LABEL: "...(REDUX_LABEL)"
+      LOADING_LABEL: "...(REDUX_LABEL)",
+      SUCCESS_LABEL: "...(REDUX_LABEL)",
+      ERROR_LABEL: "...(REDUX_LABEL)",
   });
-  // Use
+  // Usage in React Component
   const { execute, isLoading, response } = useGetUsers();
   execute({
    cbSuccess: (res) => {
