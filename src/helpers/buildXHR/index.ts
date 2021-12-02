@@ -18,16 +18,21 @@ import { defaultHttpError, defaultHttpSuccess } from "@/utils/https";
  * @param configs
  * @return React Hook for requesting API
  * @example
- * type Request = {
+ * type TRequest = {
     email: string;
     password: string;
    };
-   type Response = {
+   type TParams = {
+    email: string;
+    password: string;
+   };
+   type TResponse = {
     access_token: string;
    };
    export const useRequestRegisterAccount = buildXHR<
-     Request,
-     Response
+     TRequest,
+     TResponse,
+     TParams,
    >({
      url: "/example/api/endpoint/",
      method: "POST",
