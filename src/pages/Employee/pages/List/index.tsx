@@ -6,6 +6,7 @@ import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Button, Col, Row, Space, Table, Alert, Pagination } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useEffect, useState } from "react";
+import { EmployeeDeleteModal } from "../../organisms/EmployeeDeleteModal";
 import EmployeeModal from "../../organisms/EmployeeModal";
 import { Search } from "../../organisms/Search";
 
@@ -13,6 +14,7 @@ export const Employee = (props: EmployeeProps) => {
   const [employeeList, setEmployeeList] = useState([] as any);
   const [employee, setEmployee] = useState<EmployeeProps | null>(null);
   const [visible, setVisible] = useState(false);
+  const [deleteVisible, setDeleteVisible] = useState(false);
   const [success, setSuccess] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(1);
@@ -97,6 +99,7 @@ export const Employee = (props: EmployeeProps) => {
             <PlusOutlined />Thêm nhân viên
           </Button>
           <EmployeeModal visible={visible} setVisible={setVisible} employee={employee} setSuccess={setSuccess} />
+          <EmployeeDeleteModal employee={employee} visible={deleteVisible} setVisible={setDeleteVisible} setSuccess={setSuccess} />
         </Col>
       </Row>
       {success ? <Alert message="Thành công" type="success" /> : <></>}
