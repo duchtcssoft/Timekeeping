@@ -13,8 +13,8 @@ export const Employee = (props: EmployeeProps) => {
   const [employee, setEmployee] = useState<EmployeeProps | null>(null);
   const [visible, setVisible] = useState(false);
   const [success, setSuccess] = useState(false);
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [total, setTotal] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [total, setTotal] = useState(1);
 
   const { response, loading, error, sendData } = useAxios({
     method: "get",
@@ -30,6 +30,10 @@ export const Employee = (props: EmployeeProps) => {
   const showModal = (employee: EmployeeProps | null) => {
     setEmployee(employee);
     setVisible(true);
+  };
+
+  const changePagination = (page: number) => {
+    setCurrentPage(page);
   };
 
   const columns: ColumnsType<EmployeeProps> = [
@@ -105,6 +109,9 @@ export const Employee = (props: EmployeeProps) => {
             pagination={false}
             loading={{ indicator: <LoadingOutlined style={{ fontSize: 24 }} spin />, spinning: loading }}
           />
+          <Row justify="end" style={{ marginTop: 30 }}>
+            <Pagination defaultCurrent={1} total={total} onChange={changePagination} />
+          </Row>
         </>}
     </MainLayout>
   );
