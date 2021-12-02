@@ -6,6 +6,7 @@ import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Button, Col, Row, Space, Table, Alert, Pagination } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useEffect, useState } from "react";
+import EmployeeModal from "../../organisms/EmployeeModal";
 import { Search } from "../../organisms/Search";
 
 export const Employee = (props: EmployeeProps) => {
@@ -95,6 +96,7 @@ export const Employee = (props: EmployeeProps) => {
           <Button type="primary" onClick={() => showModal(null)}>
             <PlusOutlined />Thêm nhân viên
           </Button>
+          <EmployeeModal visible={visible} setVisible={setVisible} employee={employee} setSuccess={setSuccess} />
         </Col>
       </Row>
       {success ? <Alert message="Thành công" type="success" /> : <></>}

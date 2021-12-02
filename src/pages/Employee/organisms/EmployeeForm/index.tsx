@@ -33,15 +33,6 @@ const EmployeeForm = (props: EmployeeModalProps) => {
   const [submit, setSubmit] = useState(false);
   const [dateBirth, setDateBirth] = useState(moment());
 
-  useEffect(() => {
-    if (props.employee) {
-      setValue("name", props.employee.name);
-      setValue("email", props.employee.email);
-      setValue("phone", props.employee.phone);
-      setDateBirth(moment(props.employee.date_of_birth, "YYYY-MM-DD"));
-    }
-  }, [props.employee]);
-
   const { error, sendData } = useAxios({
     method: "POST",
     url: props.employee !== null ? `/api/employes/${props.employee?.id ?? 0}` : "/api/employes",
