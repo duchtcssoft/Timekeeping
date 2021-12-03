@@ -1,30 +1,36 @@
 import { useDeleteEmployee } from "@/api/employee";
+import { useStore } from "@/hooks/useStore";
 import { EmployeeModalProps } from "@/models/Employee/EmployeeProps";
+import { updateModalStatus, updateSuccessStatus } from "@/redux/actions/employee";
 import { Modal } from "antd";
+import { useDispatch } from "react-redux";
 
 export const EmployeeDeleteModal = (props: EmployeeModalProps) => {
-  const { execute, isLoading, response, error } = useDeleteEmployee(props.employee?.id)();
-
+  const dispatch = useDispatch();
+  const { employee } = useStore("Employee", "employeeReducer");
+  const { visibleAdd, visibleDelete } = useStore("Employee", "modalReducer");
+  const { execute, isLoading, response, error } = useDeleteEmployee(employee?.id)();
+  
   const handleOk = () => {
-    props.setVisible(false);
+    dispatch(updateModalStatus({ visibleAdd, visibleDelete: false }));
     execute({
       data: {
-        id: props.employee?.id,
+        id: employee?.id,
       },
       cbSuccess: (res) => {
-        props.setSuccess(true);
-        props.setVisible(false);
+        dispatch(updateSuccessStatus({ success: true }));
+        dispatch(updateModalStatus({ visibleAdd, visibleDelete: false }));
       },
     });
   };
-
+  
   const handleCancel = () => {
-    props.setVisible(false);
+    dispatch(updateModalStatus({ visibleAdd, visibleDelete: false }));
   };
 
   return (
-    <Modal title="Bạn có chắc chắn xóa" visible={props.visible} onOk={handleOk} onCancel={handleCancel}>
-      {`Bạn có chăc chắn xóa nhân viên ${props.employee?.name ?? ""}`}
+    <Modal title="Bạn có chắc chắn xóa" onOk={handleOk} onCancel={handleCancel} visible={visibleDelete}>
+      {`Bạn có chăc chắn xóa nhân viên ${employee?.name ?? ""}`}
     </Modal>
   );
 };

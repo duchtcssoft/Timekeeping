@@ -15,8 +15,4 @@ export interface EmployeeProps {
 }
 
 export interface EmployeeModalProps {
-  employee: EmployeeProps | null;
-  visible?: boolean;
-  setVisible: (visible: boolean) => void;
-  setSuccess: (success: boolean) => void;
 }

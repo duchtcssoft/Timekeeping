@@ -1,25 +1,27 @@
-import { EmployeeModalProps } from "@/models/Employee/EmployeeProps";
+import { useStore } from "@/hooks/useStore";
 import ReactHookForm from "@/providers/ReactHookForm";
 import { schemaEmployee } from "@/react-hook-form/validations/Employee";
+import { updateModalStatus } from "@/redux/actions/employee";
 import { Modal } from "antd";
+import { useDispatch } from "react-redux";
 import EmployeeForm from "../EmployeeForm";
 
-const EmployeeModal = (props: EmployeeModalProps) => {
+const EmployeeModal = () => {
+  const dispatch = useDispatch();
+  const { visibleAdd, visibleDelete } = useStore("Employee", "modalReducer");
   const handleCancel = () => {
-    props.setVisible(false);
+    dispatch(updateModalStatus({ visibleAdd: false, visibleDelete }));
   };
-  // console.log("modal---", props.employee);
-  
   return (
     <>
       <Modal
         title="Title"
-        visible={props.visible}
+        visible={visibleAdd}
         onCancel={handleCancel}
         footer={null}
         width={1000}
       >
-        <EmployeeForm employee={props.employee} setSuccess={props.setSuccess} setVisible={props.setVisible} visible={props.visible} />
+        <EmployeeForm />
         {/* <ReactHookForm validateSchema={schemaEmployee}>
           <EmployeeForm employee={props.employee} setSuccess={props.setSuccess} setVisible={props.setVisible} visible={props.visible} />
         </ReactHookForm> */}

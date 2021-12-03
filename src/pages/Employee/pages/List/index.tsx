@@ -1,22 +1,26 @@
 import { useListEmployee } from "@/api/employee";
 import MainBreadcrumb from "@/components/Breadcrumb";
 import MainLayout from "@/components/Layout/Layout";
-import { useAxios } from "@/hooks/axios/useAxios";
+import { useStore } from "@/hooks/useStore";
 import { EmployeeProps } from "@/models/Employee/EmployeeProps";
-import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
-import { Button, Col, Row, Space, Table, Alert, Pagination } from "antd";
+import { setEmployee, updateModalStatus, updateSuccessStatus } from "@/redux/actions/employee";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { Alert, Button, Col, Pagination, Row, Space, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { EmployeeDeleteModal } from "../../organisms/EmployeeDeleteModal";
 import EmployeeModal from "../../organisms/EmployeeModal";
 import { Search } from "../../organisms/Search";
 
 export const Employee = (props: EmployeeProps) => {
+  const dispatch = useDispatch();
+  const { success } = useStore("Employee", "successReducer");
+  const { visibleAdd, visibleDelete } = useStore("Employee", "modalReducer");
+  const { employee } = useStore("Employee", "employeeReducer");
+
   const [employeeList, setEmployeeList] = useState([] as any);
-  const [employee, setEmployee] = useState<EmployeeProps | null>(null);
-  const [visible, setVisible] = useState(false);
-  const [deleteVisible, setDeleteVisible] = useState(false);
-  const [success, setSuccess] = useState(false);
+  // const [employee, setEmployee] = useState<EmployeeProps | null>(null);
   const [message, setMessage] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(1);
@@ -46,17 +50,18 @@ export const Employee = (props: EmployeeProps) => {
     return () => {
       setTimeout(() => {
         setMessage(false);
-        setSuccess(false);
+        dispatch(updateSuccessStatus({ success: !success }));
       }, 2000);
     };
   }, [success]);
 
   const showModal = (employee: EmployeeProps | null, type: number = 1) => {
-    setEmployee(employee);
+    dispatch(setEmployee({ employee }));
+    // setEmployee(employee);
     if (type === 1) {
-      setVisible(true);
+      dispatch(updateModalStatus({ visibleAdd: true, visibleDelete }));
     } else {
-      setDeleteVisible(true);
+      dispatch(updateModalStatus({ visibleAdd, visibleDelete: true }));
     }
   };
 
@@ -132,8 +137,8 @@ export const Employee = (props: EmployeeProps) => {
           <Button type="primary" onClick={() => showModal(null)}>
             <PlusOutlined />Thêm nhân viên
           </Button>
-          <EmployeeModal visible={visible} setVisible={setVisible} employee={employee} setSuccess={setSuccess} />
-          <EmployeeDeleteModal employee={employee} visible={deleteVisible} setVisible={setDeleteVisible} setSuccess={setSuccess} />
+          <EmployeeModal />
+          <EmployeeDeleteModal />
         </Col>
       </Row>
       {message ? <Alert message="Thành công" type="success" /> : <></>}

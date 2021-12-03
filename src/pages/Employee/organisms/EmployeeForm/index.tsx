@@ -1,13 +1,15 @@
 import { useAddEmployee } from "@/api/employee";
-import { useTypedForm } from "@/hooks/useTypedForm";
-import { EmployeeModalProps, EmployeeProps } from "@/models/Employee/EmployeeProps";
+import { useStore } from "@/hooks/useStore";
+import { EmployeeProps } from "@/models/Employee/EmployeeProps";
 import { FormInput } from "@/pages/Employee/molecules/FormInput";
+import { updateModalStatus, updateSuccessStatus } from "@/redux/actions/employee";
 import { EyeInvisibleOutlined, EyeTwoTone, LoadingOutlined } from "@ant-design/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, DatePicker, Input, Select, Spin } from "antd";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import styles from "./style.module.scss";
 
@@ -27,11 +29,13 @@ const schema = yup.object().shape({
                 .oneOf([yup.ref("password"), null], "Mật khẩu chưa khớp"),
 });
 
-const EmployeeForm = (props: EmployeeModalProps) => {
+const EmployeeForm = () => {
   const { handleSubmit, formState: { errors }, control, setValue, reset } = useForm<EmployeeProps>({ resolver: yupResolver(schema) });
-  const [employee, setEmployee] = useState<EmployeeProps | null | undefined>(props.employee);
+  const { employee } = useStore("Employee", "employeeReducer");
   const [dateBirth, setDateBirth] = useState<any>(null);
-  const { execute, isLoading, response, error } = useAddEmployee(props.employee?.id ?? 0)();
+  const { execute, isLoading, response, error } = useAddEmployee(employee?.id ?? 0)();
+  const dispatch = useDispatch();
+  const { visibleAdd, visibleDelete } = useStore("Employee", "modalReducer");
 
   const onSubmit: SubmitHandler<EmployeeProps> = data => {
     const dataBody = {
@@ -50,29 +54,27 @@ const EmployeeForm = (props: EmployeeModalProps) => {
       data: dataBody,
       cbSuccess: (res) => {
         reset();
-        props.setSuccess(true);
-        props.setVisible(false);
+        dispatch(updateSuccessStatus({ success: true }));
+        dispatch(updateModalStatus({ visibleAdd: false, visibleDelete }));
       },
     });
   };
 
   useEffect(() => {
-    if (props.employee !== null) {
-      setEmployee(props.employee);
-      setValue("name", props.employee.name);
-      setValue("email", props.employee.email);
-      setValue("phone", props.employee.phone);
-      console.log(props.employee.date_of_birth);
-      
-      if (props.employee.date_of_birth !== null) {
-        setDateBirth(moment(props.employee.date_of_birth, "YYYY-MM-DD"));
+    if (employee !== null) {
+      // setEmployee(employee);
+      setValue("name", employee.name);
+      setValue("email", employee.email);
+      setValue("phone", employee.phone);
+      if (employee.date_of_birth !== null) {
+        setDateBirth(moment(employee.date_of_birth, "YYYY-MM-DD"));
       } else {
         setDateBirth(null);
       }
     } else {
       reset();
     }
-  }, [props.employee]);
+  }, [employee]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
