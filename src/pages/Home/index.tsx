@@ -9,7 +9,8 @@ import { updateMagicNumber } from "@/redux/actions/example";
 // others
 import { notify } from "@/utils/notify";
 import { ROUTES } from "@/constants/routers";
-
+import MainLayout from "@/components/Layout/Layout";
+import Offices from "../Offices";
 // TODO: talk
 
 /**
@@ -21,39 +22,8 @@ export default function Home() {
   const { magicNumber } = useStore("Home", "exampleReducer");
 
   return (
-    <h1>
-      <Button
-        onClick={() => {
-          router.push(ROUTES.SIGN_IN);
-        }}
-      >
-        Go to Sign in page
-      </Button>
-      <Button
-        onClick={() => {
-          notify.success("Success");
-        }}
-      >
-        Alert message success
-      </Button>
-      <Button
-        onClick={() => {
-          notify.error("Error");
-        }}
-      >
-        Alert message Error
-      </Button>
-      <Button
-        onClick={() => {
-          dispatch(
-            updateMagicNumber({
-              magicNumber: magicNumber * 3,
-            }),
-          );
-        }}
-      >
-        Update Magic Number (current-value: {magicNumber})
-      </Button>
-    </h1>
+    <MainLayout>
+      <Offices />
+    </MainLayout>
   );
 }

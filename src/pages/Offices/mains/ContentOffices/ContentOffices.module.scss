@@ -1,0 +1,17 @@
+.listManager{
+    .listTop{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        .topLeft{
+            display: flex;         
+            h2{
+                font-size: 24px;
+                font-weight: 500;
+                margin-right: 20px;
+                margin-bottom: 0;
+            }
+        }
+    }
+}
