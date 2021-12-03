@@ -13,10 +13,10 @@ export default function SubmitBtn() {
     <Button
       variant="contained"
       onClick={() => {
-        const { username, password } = getValues();
+        const { email, password } = getValues();
         // TODO:
         // eslint-disable-next-line no-alert
-        alert({ username, password });
+        alert({ email, password });
       }}
     >
       Sign In
