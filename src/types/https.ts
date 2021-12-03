@@ -7,7 +7,7 @@ export type TPreprocessRequestPayload = {
   others?: AnyObject;
 };
 
-type THttpMethod =
+export type THttpMethod =
   | "POST"
   | "GET"
   | "PATCH"

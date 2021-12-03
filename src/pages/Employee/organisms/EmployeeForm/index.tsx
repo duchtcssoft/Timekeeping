@@ -1,4 +1,5 @@
-import { useAxios } from "@/hooks/axios/useAxios";
+import { useAddEmployee } from "@/api/employee";
+import { useTypedForm } from "@/hooks/useTypedForm";
 import { EmployeeModalProps, EmployeeProps } from "@/models/Employee/EmployeeProps";
 import { FormInput } from "@/pages/Employee/molecules/FormInput";
 import { EyeInvisibleOutlined, EyeTwoTone, LoadingOutlined } from "@ant-design/icons";
@@ -27,23 +28,12 @@ const schema = yup.object().shape({
 });
 
 const EmployeeForm = (props: EmployeeModalProps) => {
-  const { handleSubmit, formState: { errors }, control, setValue } = useForm<EmployeeProps>({ resolver: yupResolver(schema) });
+  const { handleSubmit, formState: { errors }, control, setValue, reset } = useForm<EmployeeProps>({ resolver: yupResolver(schema) });
   const [employee, setEmployee] = useState<EmployeeProps | null | undefined>(props.employee);
-  const [loading, setLoading] = useState(false);
-  const [submit, setSubmit] = useState(false);
-  const [dateBirth, setDateBirth] = useState(moment());
-
-  const { error, sendData } = useAxios({
-    method: "POST",
-    url: props.employee !== null ? `/api/employes/${props.employee?.id ?? 0}` : "/api/employes",
-    data: employee,
-    headers: {
-      accept: "*/*",
-    },
-  });
+  const [dateBirth, setDateBirth] = useState<any>(null);
+  const { execute, isLoading, response, error } = useAddEmployee(props.employee?.id ?? 0)();
 
   const onSubmit: SubmitHandler<EmployeeProps> = data => {
-    setLoading(true);
     const dataBody = {
       name: data.name,
       email: data.email,
@@ -54,26 +44,35 @@ const EmployeeForm = (props: EmployeeModalProps) => {
       position: "Nhân viên",
       type: 1,
       avatar: "",
+      address: data.address,
     };
-    setSubmit(true);
-    setEmployee(dataBody);
+    execute({
+      data: dataBody,
+      cbSuccess: (res) => {
+        reset();
+        props.setSuccess(true);
+        props.setVisible(false);
+      },
+    });
   };
 
   useEffect(() => {
-    if (submit) {
-      sendData();
-      if (!error) {
-        setLoading(false);
-        props.setSuccess(true);
-        props.setVisible(false);
+    if (props.employee !== null) {
+      setEmployee(props.employee);
+      setValue("name", props.employee.name);
+      setValue("email", props.employee.email);
+      setValue("phone", props.employee.phone);
+      console.log(props.employee.date_of_birth);
+      
+      if (props.employee.date_of_birth !== null) {
+        setDateBirth(moment(props.employee.date_of_birth, "YYYY-MM-DD"));
+      } else {
+        setDateBirth(null);
       }
+    } else {
+      reset();
     }
-
-    return () => {
-      setEmployee(null);
-      setSubmit(false);
-    };
-  }, [submit]);
+  }, [props.employee]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -95,6 +94,7 @@ const EmployeeForm = (props: EmployeeModalProps) => {
         {errors.email && <span className={styles.form_error}>{errors.email.message}</span>}
         {error?.response?.data?.errors?.email && <span className={styles.form_error}>Email đã tồn tại</span>}
       </FormInput>
+
       <FormInput label="Số điện thoại" isRequired>
         <Controller
           name="phone"
@@ -103,6 +103,7 @@ const EmployeeForm = (props: EmployeeModalProps) => {
         />
         {errors.phone && <span className={styles.form_error}>{errors.phone.message}</span>}
       </FormInput>
+
       <FormInput label="Giới tính">
         <Controller
           name="gender"
@@ -115,6 +116,7 @@ const EmployeeForm = (props: EmployeeModalProps) => {
             </Select>}
         />
       </FormInput>
+
       <FormInput label="Văn phòng">
         <Controller
           name="office"
@@ -127,6 +129,7 @@ const EmployeeForm = (props: EmployeeModalProps) => {
             </Select>}
         />
       </FormInput>
+
       <FormInput label="Mật khẩu" isRequired>
         <Controller
           name="password"
@@ -135,6 +138,7 @@ const EmployeeForm = (props: EmployeeModalProps) => {
         />
         {errors.password && <span className={styles.form_error}>{errors.password.message}</span>}
       </FormInput>
+
       <FormInput label="Nhập lại mật khẩu" isRequired>
         <Controller
           name="passwordConfirmation"
@@ -147,6 +151,7 @@ const EmployeeForm = (props: EmployeeModalProps) => {
         />
         {errors.passwordConfirmation && <span className={styles.form_error}>{errors.passwordConfirmation.message}</span>}
       </FormInput>
+
       <FormInput label="Ngày sinh">
         <Controller
           control={control}
@@ -156,11 +161,15 @@ const EmployeeForm = (props: EmployeeModalProps) => {
               value={dateBirth}
               picker="date"
               placeholder="Ngày sinh"
-              onChange={(date) => field.onChange(date)}
+              onChange={(date) => {
+                setDateBirth(date);
+                field.onChange(date);
+              }}
             />
           )}
         />
       </FormInput>
+
       <FormInput label="Địa chỉ">
         <Controller
           name="address"
@@ -173,7 +182,7 @@ const EmployeeForm = (props: EmployeeModalProps) => {
           Submit
         </Button>
         {
-          loading ? <Spin className={styles.form_spin} indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} /> : <></>
+          isLoading ? <Spin className={styles.form_spin} indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} /> : <></>
         }
       </FormInput>
     </form>

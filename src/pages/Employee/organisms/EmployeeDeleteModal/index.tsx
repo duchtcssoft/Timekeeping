@@ -1,17 +1,21 @@
-import { useAxios } from "@/hooks/axios/useAxios";
+import { useDeleteEmployee } from "@/api/employee";
 import { EmployeeModalProps } from "@/models/Employee/EmployeeProps";
 import { Modal } from "antd";
 
 export const EmployeeDeleteModal = (props: EmployeeModalProps) => {
-  const { sendData } = useAxios({
-    method: "delete",
-    url: `api/employes/${props.employee?.id ?? 0}`,
-  });
+  const { execute, isLoading, response, error } = useDeleteEmployee(props.employee?.id)();
 
   const handleOk = () => {
     props.setVisible(false);
-    sendData();
-    props.setSuccess(true);
+    execute({
+      data: {
+        id: props.employee?.id,
+      },
+      cbSuccess: (res) => {
+        props.setSuccess(true);
+        props.setVisible(false);
+      },
+    });
   };
 
   const handleCancel = () => {

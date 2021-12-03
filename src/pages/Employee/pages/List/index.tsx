@@ -1,3 +1,4 @@
+import { useListEmployee } from "@/api/employee";
 import MainBreadcrumb from "@/components/Breadcrumb";
 import MainLayout from "@/components/Layout/Layout";
 import { useAxios } from "@/hooks/axios/useAxios";
@@ -16,26 +17,59 @@ export const Employee = (props: EmployeeProps) => {
   const [visible, setVisible] = useState(false);
   const [deleteVisible, setDeleteVisible] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [message, setMessage] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(1);
 
-  const { response, loading, error, sendData } = useAxios({
-    method: "get",
-    url: "api/employes",
-  });
+  const { execute, isLoading, response, error } = useListEmployee();
 
   useEffect(() => {
-    if (response !== null) {
-      setEmployeeList(response.data);
-    }
-  }, [response]);
+    execute({
+      cbSuccess: (res) => {
+        setEmployeeList(res.data);
+        setTotal(res.pagination.total);
+      },
+    });
+  }, []);
 
-  const showModal = (employee: EmployeeProps | null) => {
+  useEffect(() => {
+    if (success) {
+      execute({
+        cbSuccess: (res) => {
+          setEmployeeList(res.data);
+          setTotal(res.pagination.total);
+          setMessage(true);
+        },
+      });
+    }
+
+    return () => {
+      setTimeout(() => {
+        setMessage(false);
+        setSuccess(false);
+      }, 2000);
+    };
+  }, [success]);
+
+  const showModal = (employee: EmployeeProps | null, type: number = 1) => {
     setEmployee(employee);
-    setVisible(true);
+    if (type === 1) {
+      setVisible(true);
+    } else {
+      setDeleteVisible(true);
+    }
   };
 
   const changePagination = (page: number) => {
+    execute({
+      params: {
+        page,
+      },
+      cbSuccess: (res) => {
+        setEmployeeList(res.data);
+        setTotal(res.pagination.total);
+      },
+    });
     setCurrentPage(page);
   };
 
@@ -78,10 +112,10 @@ export const Employee = (props: EmployeeProps) => {
     {
       key: "action",
       title: "Thao tác",
-      render: (e) => (
+      render: (employee) => (
         <Space size="middle">
-          <Button>Chỉnh sửa</Button>
-          <Button danger>Xóa</Button>
+          <Button onClick={() => showModal(employee)}>Chỉnh sửa</Button>
+          <Button danger onClick={() => showModal(employee, 2)}>Xóa</Button>
         </Space>
       ),
     },
@@ -102,7 +136,7 @@ export const Employee = (props: EmployeeProps) => {
           <EmployeeDeleteModal employee={employee} visible={deleteVisible} setVisible={setDeleteVisible} setSuccess={setSuccess} />
         </Col>
       </Row>
-      {success ? <Alert message="Thành công" type="success" /> : <></>}
+      {message ? <Alert message="Thành công" type="success" /> : <></>}
       {error
         ? <Alert message="Đã có lỗi xảy ra" type="error" />
         :
@@ -112,7 +146,7 @@ export const Employee = (props: EmployeeProps) => {
             dataSource={employeeList}
             rowKey="id"
             pagination={false}
-            loading={{ indicator: <LoadingOutlined style={{ fontSize: 24 }} spin />, spinning: loading }}
+            loading={{ indicator: <LoadingOutlined style={{ fontSize: 24 }} spin />, spinning: isLoading }}
           />
           <Row justify="end" style={{ marginTop: 30 }}>
             <Pagination defaultCurrent={1} total={total} onChange={changePagination} />
