@@ -1,16 +1,19 @@
+import { useAddOffice, useGetOfficeAction, useRequestOffice } from "@/api/requestOffices";
 import "@/styles/index.css";
 import "antd/dist/antd.css";
 import CreateOffices from "../../components/CreateOffices";
 import SearchInput from "../../components/SearchInput";
 import TableOffice from "../../components/TableOffice";
 import styles from "./ContentOffices.module.scss";
+import { useState, useEffect } from "react";
 
 export default function ContentOffices() {
-  // const [loading, setLoading] = useState(false);
-  // const [offices, setOffices] = useState([]);
-  // const [page, setPage] = useState(1);
-  // const [pageSize, setPageSize] = useState(7);
+  const { execute: getListOffice, isLoading, response: offices } = useGetOfficeAction();
+  useEffect(() => {
+    getListOffice({});
+  }, []);
 
+  console.log("đây là:", offices);
   // useEffect(() => {
   //   const fetchTables = async () => {
   //     setLoading(true);
@@ -48,7 +51,7 @@ export default function ContentOffices() {
             <CreateOffices />
           </div>
         </div>
-        <TableOffice />
+        <TableOffice offices={offices} />
       </div>
     </div>
   );

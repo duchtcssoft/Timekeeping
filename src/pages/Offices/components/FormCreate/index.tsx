@@ -5,36 +5,24 @@ import {
   Button,
 } from "antd";
 import styles from "./Formcreate.module.scss";
-import axios from "axios";
 import { useState } from "react";
-import { API_URL, TOKEN } from "../../../../constants/BaseURL/Config";
+import { useRequestOffice } from "@/api/requestOffices";
 
 export default function FormCreate() {
-  const handleFinish = (values: any) => {
-    const body = {
-      name: values.name,
-      address: values.address,
-      province_id: values.provinceId,
-      latitude: values.latitude,
-      longitude: values.longitude,
-      starting_hour: values.startHour,
-      ending_hour: values.endHour,
-    };
+  const { execute } = useRequestOffice();
 
-    // console.log(values);
-    axios.post(`${API_URL}/offices`, body,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${TOKEN}`,
-        },
-      }).then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log("EEERRR: ", error);
-      });
+  const handleFinish = (values: any) => {
+    execute({
+      data: {
+        name: values.name,
+        address: values.address,
+        province_id: values.provinceId,
+        latitude: values.latitude,
+        longitude: values.longitude,
+        starting_hour: values.startHour,
+        ending_hour: values.endHour,
+      },
+    });
   };
   return (
     <Form

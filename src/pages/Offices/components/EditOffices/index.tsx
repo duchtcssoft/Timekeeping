@@ -4,7 +4,7 @@ import {
   Modal,
 } from "antd";
 import "antd/dist/antd.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdressMap from "../AddressMap";
 import FormEdit from "../FormEdit";
 // import axios from "axios";
@@ -19,6 +19,7 @@ export default function EditOffices() {
   const handleEdit = () => {
     setVisible(true);
   };
+
   return (
     <>
       <Button type="primary" onClick={() => handleEdit()} shape="default" size="small">

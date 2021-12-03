@@ -1,15 +1,15 @@
 // libs
+import { TResponseOffice, useAddOffice, useDeleteOffice, useRequestOffice } from "@/api/requestOffices";
 import {
   Button, Table, Modal,
 } from "antd";
 import { ColumnType } from "antd/lib/table";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { API_URL, TOKEN } from "../../../../constants/BaseURL/Config";
+import { number } from "yup/lib/locale";
 import EditOffices from "../EditOffices";
 import styles from "./Listmanager.module.scss";
+import { useStore } from "@/hooks/useStore";
 
-// const data = [
+// const offices = [
 //   {
 //     name: "csss",
 //     address: "",
@@ -19,12 +19,9 @@ import styles from "./Listmanager.module.scss";
 //   },
 // ];
 
-export default function TableOffice() {
-  const [loading, setLoading] = useState(false);
-  const [offices, setOffices] = useState([]);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(7);
-
+export default function TableOffice({ offices }: { offices: TResponseOffice | null }) {
+  const dataOffice = useStore("Office", "pageDataReducer");
+  // console.log(abc);
   const columns: (ColumnType<{ a: string, b: string }>)[] = [
     {
       title: "Name",
@@ -57,13 +54,11 @@ export default function TableOffice() {
       title: "Actions",
       dataIndex: "Actions",
       key: "5",
-      render: (record) => (
+      render: () => (
         <>
           <EditOffices />
           <Button
-            onClick={() => {
-              onHandlDelete(record);
-            }}
+            onClick={onHandleDele}
             type="default"
             shape="default"
             size="small"
@@ -73,63 +68,31 @@ export default function TableOffice() {
           </Button>
         </>
       ),
+      // render: (record) => (
+
+      // ),
     },
   ];
 
-  useEffect(() => {
-    const fetchTables = async () => {
-      setLoading(true);
-      await axios.get(`${API_URL}/offices`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${TOKEN}`,
-          },
-        }).then((res) => {
-          setOffices(res.data.data);
-          console.log(res);
-          setPageSize(res.data.pagination.perPage);
-          console.log(res.data.pagination.perPage);
-          setPage(res.data.pagination.currentPage);
-          console.log(res.data.pagination.currentPage);
-        })
-        .catch((error) => {
-          console.log(error);
-        }).finally(() => {
-          setLoading(false);
-        },
-        );
-    };
-    fetchTables();
-  }, []);
-
-  const onHandlDelete = (record: any) => {
+  const onHandleDele = () => {
     Modal.confirm({
       title: "bạn có chắc chắn muốn xoá chi nhánh này không?",
       okType: "danger",
       onOk: () => {
-        setOffices((pre: never[]) =>
-          pre.filter((office: any) => console.log(record)));
+
+        // setOffices((pre: never[]) =>
+        //   pre.filter((office: any) => console.log(office.id)));
       },
     });
   };
-  // const handleEdit = () => {
 
-  // };
+  const handleEdit = () => {
+  };
   return (
     <div className={styles.listtable}>
       <Table
-        loading={loading}
         columns={columns}
-        dataSource={offices}
-        pagination={{
-          current: page,
-          pageSize,
-          onChange: (page, pageSize) => {
-            setPage(page);
-            setPageSize(pageSize);
-          },
-        }}
+        dataSource={dataOffice.listOffice}
       />
     </div>
   );
