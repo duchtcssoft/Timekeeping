@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/comma-dangle */
 // libs
 import { useState } from "react";
 import {
@@ -49,16 +50,23 @@ export const buildXHR = <
   TRequestData = AnyObject,
   TResponse = AnyObject,
   TRequestParams = AnyObject,
+  TRequestHeaders = AnyObject
 >(
   configs: TApiConfigs & AxiosRequestConfig,
-  axiosInstance: AxiosInstance = AXIOS_INSTANCE,
+  axiosInstance: AxiosInstance = AXIOS_INSTANCE
 ) => () => {
   const [isLoading, setLoading] = useState(false);
   const [response, setResponse] = useState<TResponse | null>(null);
   const [error, setError] = useState<AxiosError | null>(null);
+  const accessToken = localStorage.getItem("accessToken");
 
   const execute = (
-    cbProps?: TCallbackProps<TRequestData, TRequestParams, TResponse>,
+    cbProps?: TCallbackProps<
+      TRequestData,
+      TRequestParams,
+      TResponse,
+      TRequestHeaders
+    >
   ) => {
     const { data, params, cbSuccess, cbError } = cbProps || {};
     setLoading(true);
@@ -67,6 +75,9 @@ export const buildXHR = <
 
     return axiosInstance
       .request({
+        headers: {
+        Authorization: `Bearer ${accessToken}`,
+        },
         data,
         params,
         ...configs,

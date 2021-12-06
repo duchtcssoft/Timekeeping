@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/comma-dangle */
 // libs
 import { useDispatch } from "react-redux";
 // types
@@ -34,15 +35,26 @@ export const buildAsyncAction = <
   TRequestData = AnyObject,
   TResponse = AnyObject,
   TRequestParams = AnyObject,
+  TRequestHeaders = AnyObject
 >(
-  configs: TAsyncActionConfigs<TRequestData, TResponse, TRequestParams>,
+  configs: TAsyncActionConfigs<
+    TRequestData,
+    TResponse,
+    TRequestParams,
+    TRequestHeaders
+  >
 ) => () => {
   const dispatch = useDispatch();
   const { LOADING_LABEL, SUCCESS_LABEL, ERROR_LABEL, XHRHook } = configs;
   const { execute: executeXHR, isLoading, response, error } = XHRHook();
 
   const executeAction = (
-    props: TCallbackProps<TRequestData, TRequestParams, TResponse>,
+    props: TCallbackProps<
+      TRequestData,
+      TRequestParams,
+      TResponse,
+      TRequestHeaders
+    >
   ) => {
     const { data, params, cbSuccess, cbError } = props;
 

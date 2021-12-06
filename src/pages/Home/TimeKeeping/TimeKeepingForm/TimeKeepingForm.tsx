@@ -1,69 +1,52 @@
 import classes from "./TimeKeepingForm.module.scss";
 import { useState, useEffect } from "react";
-import { Button, Input, Select } from "antd";
-import BASE_URL from "@/api/BaseUrl/BaseUrl";
+import { Button, Input, Select, Form } from "antd";
 import axios from "axios";
+import { BASE_URL } from "@/https/AxiosInstance";
+import { useGetOfficesAction } from "@/api/GetOffices";
+import { InputField } from "@/custom-field/InputField/InputField";
+import { Controller } from "react-hook-form";
 import { useTypedForm } from "@/hooks/useTypedForm";
 
 export default function TimeKeepingForm(props: any) {
   const accessToken = localStorage.getItem("accessToken");
   const [getOffice, setGetOffice] = useState([]);
   const [getOfficeShift, setGetOfficeShift] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(true);
   const { Option } = Select;
   const { TextArea } = Input;
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useTypedForm("CheckIn");
 
+  const { execute: getOffices } = useGetOfficesAction();
   useEffect(() => {
-    const fetchTables = async () => {
-      setLoading(true);
-      await axios
-        .get(`${BASE_URL}/offices`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .then((res) => {
-          console.log("res: ", res);
-
-          setGetOffice(res.data.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    };
-    fetchTables();
+    getOffices({
+      cbSuccess: (res: any) => {
+        // This is on success callback
+        console.log(res);
+        setGetOffice(res.data);
+      },
+      cbError: (err: any) => {
+        console.log(err);
+      },
+    });
   }, []);
 
   const handleOfficeChange = (value: any) => {
-    // console.log(`selected ${value}`);
+    console.log(`selected ${value}`);
     setIsDisable(true);
-    axios
-      .get(`${BASE_URL}/office-shifts?office_id=${value}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    axios({
+      method: "get",
+      url: `${BASE_URL}/api/office-shifts?office_id=${value}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
       .then((res) => {
         console.log("res officeshift: ", res.data.data);
         setGetOfficeShift(res.data.data);
       })
       .catch((error) => {
         console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
       })
       .finally(() => {
         setIsDisable(false);
@@ -78,50 +61,81 @@ export default function TimeKeepingForm(props: any) {
     console.log("Change:", e.target.value);
   };
 
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useTypedForm("CheckIn");
   const onSubmit = (values: any) => {
     console.log("form values: ", values);
   };
+
   return (
     <div className={classes.wrapper}>
-      <form onSubmit={onSubmit} className={classes.row}>
+      <form onSubmit={handleSubmit(onSubmit)} className={classes.row}>
         <div className={classes.col}>
-          <label>Chọn văn phòng làm việc</label>
-          <Select
-            loading={loading}
-            defaultValue="Select..."
-            style={{ width: "100%" }}
-            onChange={handleOfficeChange}
-          >
-            {getOffice.map((office: any) => (
-              <Option value={office.id} key={office.id}>
-                {office.name}
-              </Option>
+          <InputField label="Chọn văn phòng làm việc" isRequired>
+            <Controller
+              name="office_id"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  size="large"
+                  defaultValue="Select..."
+                  style={{ width: "100%" }}
+                  onChange={handleOfficeChange}
+                >
+                  {getOffice.map((office: any) => (
+                    <Option value={office.id} key={office.name}>
+                      {office.name}
+                    </Option>
             ))}
-          </Select>
+                </Select>
+            )}
+            />
+          </InputField>
         </div>
         <div className={classes.col}>
-          <label>Chọn ca làm việc</label>
-          <Select
-            disabled={isDisable}
-            loading={loading}
-            defaultValue="Select..."
-            style={{ width: "100%" }}
-            onChange={handleOfficeShiftChange}
-          >
-            {getOfficeShift.map((officeShift: any) => (
-              <Option value={officeShift.id} key={officeShift.id}>
-                {officeShift.name}
-              </Option>
-            ))}
-          </Select>
+          <InputField label="Chọn ca làm việc" isRequired>
+            <Controller
+              name="office_shifts_id"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  size="large"
+                  disabled={isDisable}
+                  defaultValue="Select..."
+                  style={{ width: "100%" }}
+                  onChange={handleOfficeShiftChange}
+                >
+                  {getOfficeShift.map((officeShift: any) => (
+                    <Option
+                      value={officeShift.id}
+                      key={officeShift.id}
+                    >
+                      {officeShift.name}
+                    </Option>
+          ))}
+                </Select>
+           )}
+            />
+          </InputField>
+
         </div>
         <div className={classes.col}>
-          <label>Ghi chú</label>
-          <TextArea showCount maxLength={100} onChange={onChange} />
+          <InputField label="Ghi chú" isRequired>
+            <Controller
+              name="office_shifts_id"
+              control={control}
+              render={({ field }) => (
+                <TextArea {...field} showCount maxLength={100} onChange={onChange} />
+          )}
+            />
+          </InputField>
         </div>
         <Button
           loading={props.loading}
-          // onClick={props.onClick}
           style={{ width: "100%", marginBottom: "20px" }}
           type="primary"
           htmlType="submit"

@@ -85,7 +85,6 @@ function SignInForm(props: any) {
         <Form.Item style={{ display: "block" }}>
           <Button
             loading={props.loading}
-            // onClick={props.onClick}
             style={{ width: "100%", marginBottom: "20px" }}
             type="primary"
             htmlType="submit"
