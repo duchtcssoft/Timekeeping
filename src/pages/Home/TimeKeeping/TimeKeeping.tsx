@@ -5,7 +5,7 @@ import { TimeKeepingProps } from "@/models/TimeKeeping/TimeKeepingProps";
 import { Search } from "@/pages/Employee/molecules/Search";
 import { setTimeKeeping, updateModalStatus } from "@/redux/actions/timeKeeping";
 import { LoadingOutlined, CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { Alert, Button, Col, Pagination, Row, Table } from "antd";
+import { Alert, Button, Col, Pagination, Row, Space, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -72,6 +72,16 @@ export default function TimeKeeping() {
       key: "status",
       title: "Trạng thái",
       dataIndex: "status",
+    },
+    {
+      key: "action",
+      title: "Thao tác",
+      render: (employee) => (
+        <Space size="middle">
+          <Button onClick={() => showModal(employee)}>Chỉnh sửa</Button>
+          <Button danger onClick={() => showModal(employee, 2)}>Xóa</Button>
+        </Space>
+      ),
     },
   ];
   return (
