@@ -1,31 +1,45 @@
 import {
-  Form,
   Input,
   Select,
   Button,
+  FormInstance,
+  Form,
 } from "antd";
 import styles from "./Formcreate.module.scss";
-import { useState } from "react";
-import { useRequestOffice } from "@/api/requestOffices";
+import { useState, useEffect } from "react";
+import { useAddOffice, useGetOfficeAction, useRequestOffice } from "@/api/requestOffices";
+import { useDispatch } from "react-redux";
 
-export default function FormCreate() {
-  const { execute } = useRequestOffice();
+interface Props {
+  handleFinish: (value: any) => void;
+  onCancel: () => void;
+  form?: FormInstance;
+}
 
-  const handleFinish = (values: any) => {
-    execute({
-      data: {
-        name: values.name,
-        address: values.address,
-        province_id: values.provinceId,
-        latitude: values.latitude,
-        longitude: values.longitude,
-        starting_hour: values.startHour,
-        ending_hour: values.endHour,
-      },
-    });
-  };
+export default function FormCreate(props: Props) {
+  const { handleFinish, onCancel, form } = props;
+  const { execute } = useAddOffice();
+  const { execute: getListOffice, isLoading, response: offices } = useGetOfficeAction();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getListOffice({});
+  }, []);
+  // const handleFinish = (values: any) => {
+  //   execute({
+  //     data: {
+  //       name: values.name,
+  //       address: values.address,
+  //       province_id: values.provinceId,
+  //       latitude: values.latitude,
+  //       longitude: values.longitude,
+  //       starting_hour: values.startHour,
+  //       ending_hour: values.endHour,
+  //     },
+  //   });
+  // };
   return (
     <Form
+      // form={form}
       initialValues={{ remember: true }}
       onFinish={handleFinish}
       labelCol={{ span: 0 }}
@@ -92,7 +106,8 @@ export default function FormCreate() {
         </Form.Item>
       </div>
       <Form.Item>
-        <Button htmlType="submit" type="primary">Thêm</Button>
+        <Button htmlType="submit" type="primary" style={{ marginRight: 12 }}>Add</Button>
+        <Button onClick={onCancel} type="primary">Cancel</Button>
       </Form.Item>
     </Form>
   );

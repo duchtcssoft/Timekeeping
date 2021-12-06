@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 export default function ContentOffices() {
   const { execute: getListOffice, isLoading, response: offices } = useGetOfficeAction();
   useEffect(() => {
+    console.log("getListOffice({})", getListOffice({}));
     getListOffice({});
   }, []);
 
@@ -51,7 +52,7 @@ export default function ContentOffices() {
             <CreateOffices />
           </div>
         </div>
-        <TableOffice offices={offices} />
+        <TableOffice />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 // libs
-import { TResponseOffice, useAddOffice, useDeleteOffice, useRequestOffice } from "@/api/requestOffices";
+import { TResponseOffice, useDeleteOffice, useGetOfficeAction } from "@/api/requestOffices";
 import {
   Button, Table, Modal,
 } from "antd";
@@ -8,7 +8,10 @@ import { number } from "yup/lib/locale";
 import EditOffices from "../EditOffices";
 import styles from "./Listmanager.module.scss";
 import { useStore } from "@/hooks/useStore";
-
+import axios from "axios";
+import { TOKEN } from "@/constants/BaseURL/Config";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 // const offices = [
 //   {
 //     name: "csss",
@@ -19,16 +22,19 @@ import { useStore } from "@/hooks/useStore";
 //   },
 // ];
 
-export default function TableOffice({ offices }: { offices: TResponseOffice | null }) {
+export default function TableOffice() {
   const dataOffice = useStore("Office", "pageDataReducer");
+  const data = dataOffice.listOffice;
   // console.log(abc);
-  const columns: (ColumnType<{ a: string, b: string }>)[] = [
+  const { execute } = useGetOfficeAction();
+  // const { execute } = useDeleteOffice(id);
+
+  // const { execute } = useDeleteOffice(idOffice);
+
+  const columns = [
     {
       title: "Name",
       dataIndex: "name",
-      key: "1",
-      // sorter: (a,b) => {a.L}
-      // render: (text: any) => <a>{text}</a>,
     },
     {
       title: "Address",
@@ -38,28 +44,25 @@ export default function TableOffice({ offices }: { offices: TResponseOffice | nu
     {
       title: "Province_id",
       dataIndex: "province_id",
-      key: "2",
     },
     {
       title: "Start Working",
       dataIndex: "starting_hour",
-      key: "3",
     },
     {
       title: "Stop Working",
       dataIndex: "ending_hour",
-      key: "4",
     },
     {
       title: "Actions",
-      dataIndex: "Actions",
-      key: "5",
-      render: () => (
+      render: (office: any) => (
+        // dataListOffice.map((item: any) => dataListOffice.map((item: any) =>
         <>
+          {console.log("office:office", office)}
           <EditOffices />
           <Button
-            onClick={onHandleDele}
             type="default"
+            onClick={() => onHandleDele(office.id)}
             shape="default"
             size="small"
             style={{ color: "red", marginLeft: 12 }}
@@ -67,21 +70,31 @@ export default function TableOffice({ offices }: { offices: TResponseOffice | nu
             Delete
           </Button>
         </>
+        // ))
       ),
-      // render: (record) => (
-
-      // ),
     },
   ];
+  // const idOffice = (dataOffice.listOffice.map((item: any) => item.id));
+  const dataListOffice = dataOffice.listOffice;
 
-  const onHandleDele = () => {
+  const onHandleDele = (idOffice: any) => {
+    console.log(dataListOffice);
     Modal.confirm({
       title: "bạn có chắc chắn muốn xoá chi nhánh này không?",
       okType: "danger",
       onOk: () => {
+        console.log(idOffice);
+        axios({
+          method: "delete",
+          url: `http://timekeeping.cssdemoco.com/api/offices/${idOffice}`,
+          headers: {
+            Authorization: `Bearer ${TOKEN}`,
+          },
+        }).then(res => console.log("res", res),
 
-        // setOffices((pre: never[]) =>
-        //   pre.filter((office: any) => console.log(office.id)));
+        ).then(() => execute({}))
+          .catch(err => console.log(err.data),
+        );
       },
     });
   };
@@ -92,7 +105,7 @@ export default function TableOffice({ offices }: { offices: TResponseOffice | nu
     <div className={styles.listtable}>
       <Table
         columns={columns}
-        dataSource={dataOffice.listOffice}
+        dataSource={data}
       />
     </div>
   );

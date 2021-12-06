@@ -1,8 +1,9 @@
 import { TOKEN } from "@/constants/BaseURL/Config";
 import { buildAsyncAction, buildXHR } from "@/helpers";
 import { API_LABELS } from "@/redux/actionLabels";
+import { number } from "yup/lib/locale";
 
-type TRequest = {
+interface TRequest {
   name: string;
   address: string;
   province_id: number;
@@ -10,8 +11,10 @@ type TRequest = {
   longitude: number;
   starting_hour: string;
   ending_hour: string;
+}
+export type TParams = {
+  id: number;
 };
-type TParams = {};
 export type TResponseOffice = {
   listOffice: any[];
 };
