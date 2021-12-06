@@ -6,7 +6,7 @@ import ForgotPassword from "@/pages/ForgotPassword/ForgotPassword";
 // pages
 import Signin from "@/pages/SignIn/Signin";
 import Signup from "@/pages/Signup/Signup";
-import TimeKeeping from "@/pages/Home/TimeKeeping/TimeKeeping";
+import TimeKeeping from "@/pages/TimeKeeping/TimeKeeping";
 
 /**
  * define main pages routes
