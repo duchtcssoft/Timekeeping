@@ -4,6 +4,7 @@ import {
   DownOutlined,
   GlobalOutlined,
   LogoutOutlined,
+  LockOutlined,
 } from "@ant-design/icons";
 import { Button, Dropdown, Menu } from "antd";
 import axios from "axios";
@@ -31,20 +32,30 @@ export default function AdminProfile() {
     localStorage.removeItem("accessToken");
     history.replace(ROUTES.SIGN_IN);
   };
-
+const handleChangePasswordClick = () => {
+  history.push(ROUTES.CHANGE_PASSWORD);
+};
   const menu = (
     <Menu style={{ borderRadius: "5px" }}>
       <Menu.Item key="0" className={classes.menu_item}>
         <GlobalOutlined />
         <span style={{ marginLeft: "10px" }} className={classes.list_item}>
-          Language
+          Ngôn Ngữ
         </span>
       </Menu.Item>
       <Menu.Item key="1" className={classes.menu_item}>
         <div onClick={handleLogoutClick}>
           <LogoutOutlined />
           <span style={{ marginLeft: "10px" }} className={classes.list_item}>
-            Sign out
+            Đăng Xuất
+          </span>
+        </div>
+      </Menu.Item>
+      <Menu.Item key="0" className={classes.menu_item}>
+        <div onClick={handleChangePasswordClick}>
+          <LockOutlined />
+          <span style={{ marginLeft: "10px" }} className={classes.list_item}>
+            Đổi Mật Khẩu
           </span>
         </div>
       </Menu.Item>

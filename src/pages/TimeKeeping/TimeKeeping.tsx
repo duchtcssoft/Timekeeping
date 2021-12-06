@@ -7,7 +7,7 @@ import { setTimeKeeping, updateModalStatus } from "@/redux/actions/timeKeeping";
 import { LoadingOutlined, CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { Alert, Button, Col, Pagination, Row, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import TimeKeepingModal from "./Modal";
 
@@ -15,7 +15,7 @@ export default function TimeKeeping() {
   const dispatch = useDispatch();
 
   const [message, setMessage] = useState(false);
-  const { execute, isLoading, response, error } = useGetTimeKeepingList();
+  const { execute: getTimeKeepingList, isLoading, response, error } = useGetTimeKeepingList();
   const [timeKeepingList, setTimeKeepingList] = useState([] as any);
   const [total, setTotal] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,8 +30,18 @@ export default function TimeKeeping() {
     }
   };
 
+  useEffect(() => {
+    getTimeKeepingList({
+      cbSuccess: (res) => {
+        console.log("list cham cong: ", res.data);
+        setTimeKeepingList(res.data);
+        const a = res.data[0].created_at;
+        console.log(a.slice(0, 10));
+      },
+    });
+  }, []);
   const changePagination = (page: number) => {
-    execute({
+    getTimeKeepingList({
       params: {
         page,
       },
@@ -42,36 +52,45 @@ export default function TimeKeeping() {
     });
     setCurrentPage(page);
   };
+
   const columns: ColumnsType<TimeKeepingProps> = [
     {
-      key: "id",
+      key: "user_id",
       title: "Mã nhân viên",
-      dataIndex: "id",
+      dataIndex: "user_id",
     },
     {
-      key: "date",
+      key: "created_at",
       title: "Ngày",
-      dataIndex: "date",
+      dataIndex: "created_at",
+      render: a => <p>{a}</p>,
     },
     {
-      key: "office",
+      key: "office_id",
       title: "Chi Nhánh",
-      dataIndex: "office",
+      dataIndex: "office_id",
     },
     {
-      key: "officeShift",
-      title: "Điện thoại",
-      dataIndex: "officeShift",
+      key: "office_shifts_id",
+      title: "Ca Làm Việc",
+      dataIndex: "office_shifts_id",
     },
     {
-      key: "time",
-      title: "Thời Gian",
-      dataIndex: "time",
+      key: "checkin",
+      title: "Check In Time",
+      dataIndex: "checkin",
     },
     {
-      key: "status",
-      title: "Trạng thái",
-      dataIndex: "status",
+      key: "checkout",
+      title: "Check Out Time",
+      dataIndex: "checkout",
+    },
+
+      {
+        key: "checkout_note",
+        title: "Trạng thái",
+        dataIndex: "checkin_note",
+
     },
   ];
   return (
@@ -85,7 +104,7 @@ export default function TimeKeeping() {
           <Button type="primary" onClick={() => showModal(null)}>
             <CheckOutlined />Chấm Công Vào
           </Button>
-          <Button type="primary" onClick={() => showModal(null)}>
+          <Button onClick={() => showModal(null)}>
             <CloseOutlined />Chấm Công Ra
           </Button>
           <TimeKeepingModal />
