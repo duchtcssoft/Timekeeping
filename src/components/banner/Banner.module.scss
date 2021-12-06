@@ -1,0 +1,27 @@
+.wrapper {
+  background-image: url(https://media.istockphoto.com/photos/checklist-and-pen-picture-id499000583?b=1&k=20&m=499000583&s=170667a&w=0&h=IVARUOY2sj6TBkMC2-yzHm4o0X2mOLk-vFnixUy7gg0=);
+  background-repeat: no-repeat;
+  background-size: cover;
+  //   height: 100vh;
+  padding: 20px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  flex-grow: 1;
+  width: 200px;
+  .logo {
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 26px;
+    font-weight: 700;
+    transition: all 0.2s;
+    color: #fff;
+    background: linear-gradient(to right, #366dad 0%, #6de7f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .title {
+    margin: 50px 0 0 20px;
+    // width: 50%;
+    // color: #fff;
+  }
+}

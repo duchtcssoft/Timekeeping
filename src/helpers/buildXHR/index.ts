@@ -49,8 +49,9 @@ export const buildXHR = <
   TRequestData = AnyObject,
   TResponse = AnyObject,
   TRequestParams = AnyObject,
+  TRequestHeaders = AnyObject,
 >(
-  configs: TApiConfigs & AxiosRequestConfig,
+  { headers, ...restConfigs }: TApiConfigs & AxiosRequestConfig,
   axiosInstance: AxiosInstance = AXIOS_INSTANCE,
 ) => () => {
   const [isLoading, setLoading] = useState(false);
@@ -58,8 +59,14 @@ export const buildXHR = <
   const [error, setError] = useState<AxiosError | null>(null);
 
   const execute = (
-    cbProps?: TCallbackProps<TRequestData, TRequestParams, TResponse>,
+    cbProps?: TCallbackProps<
+      TRequestData,
+      TRequestParams,
+      TResponse,
+      TRequestHeaders
+    >,
   ) => {
+    const accessToken = localStorage.getItem("accessToken");
     const { data, params, cbSuccess, cbError } = cbProps || {};
     setLoading(true);
     setResponse(null);
@@ -67,9 +74,13 @@ export const buildXHR = <
 
     return axiosInstance
       .request({
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          ...headers,
+        },
         data,
         params,
-        ...configs,
+        ...restConfigs,
       })
       .then((response: AxiosResponse<TResponse>) => {
         setResponse(response.data);
