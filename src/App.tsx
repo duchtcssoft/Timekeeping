@@ -2,7 +2,6 @@
 import { Suspense } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Provider as ReduxProvider } from "react-redux";
-import { CssBaseline } from "@mui/material";
 // routes
 import appRoutes from "@/routers";
 // others
@@ -20,7 +19,6 @@ export default function App() {
     <BrowserRouter>
       <Suspense fallback="Suspensed">
         <ReduxProvider store={store}>
-          <CssBaseline />
           <Switch>
             {appRoutes.map((route) => (
               <Route
@@ -39,7 +37,8 @@ export default function App() {
                   <Home />
                 ) : (
                   <Redirect to={ROUTES.SIGN_IN} />
-                )}
+                )
+              }
             />
           </Switch>
         </ReduxProvider>
