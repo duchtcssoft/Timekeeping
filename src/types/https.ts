@@ -24,7 +24,7 @@ export type TApiConfigs = {
   /** http method */
   method: THttpMethod;
 };
-
+// FIXME: Why there is a lot of TRequestHeaders here, should delete it or not?
 // eslint-disable-next-line @typescript-eslint/comma-dangle
 export type TCallbackProps<
   TRequestData,

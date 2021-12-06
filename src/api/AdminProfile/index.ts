@@ -5,6 +5,7 @@ type TRequest = {
   access_token: string;
 };
 type TResponse = {
+// TODO: Add real API Response typescript
   data: any;
 };
 export const useRequestAdminProfile = buildXHR<TRequest, TResponse>({

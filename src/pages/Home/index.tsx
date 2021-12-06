@@ -1,5 +1,4 @@
 // libs
-import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 // hooks
 import { useRouter } from "@/hooks/router/useRouter";
@@ -10,8 +9,6 @@ import { updateMagicNumber } from "@/redux/actions/example";
 import { notify } from "@/utils/notify";
 import { ROUTES } from "@/constants/routers";
 import MainLayout from "@/components/Layout/Layout";
-
-// TODO: talk
 
 /**
  * Home

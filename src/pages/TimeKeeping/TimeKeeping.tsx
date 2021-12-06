@@ -14,11 +14,11 @@ import TimeKeepingModal from "./Modal";
 export default function TimeKeeping() {
   const dispatch = useDispatch();
 
+// FIXME: We don't need below timeKeepingList useState and total useState, use above response
   const [message, setMessage] = useState(false);
   const { execute: getTimeKeepingList, isLoading, response, error } = useGetTimeKeepingList();
   const [timeKeepingList, setTimeKeepingList] = useState([] as any);
   const [total, setTotal] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const showModal = (timeKeeping: TimeKeepingProps | null, type: number = 1) => {
     dispatch(setTimeKeeping({ timeKeeping }));
@@ -29,7 +29,7 @@ export default function TimeKeeping() {
       dispatch(updateModalStatus({ visibleCheckIn: false, visibleCheckOut: true }));
     }
   };
-
+  console.log("response: ", response.data);
   useEffect(() => {
     getTimeKeepingList({
       cbSuccess: (res) => {
@@ -53,6 +53,7 @@ export default function TimeKeeping() {
     setCurrentPage(page);
   };
 
+  // FIXME: Bring this datasources to src/dataSources/[pageName]
   const columns: ColumnsType<TimeKeepingProps> = [
     {
       key: "user_id",

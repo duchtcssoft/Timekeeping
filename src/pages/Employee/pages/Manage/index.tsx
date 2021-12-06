@@ -123,6 +123,7 @@ const EmployeeManage = () => {
                 message: "Please confirm your password!",
               },
               ({ getFieldValue }) => ({
+                // FIXME: What is this (validator?)
                 validator(_, value) {
                   if (!value || getFieldValue("password") === value) {
                     return Promise.resolve();

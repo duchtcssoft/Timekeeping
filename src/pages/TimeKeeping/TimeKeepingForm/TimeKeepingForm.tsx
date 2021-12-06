@@ -10,6 +10,9 @@ import { useTypedForm } from "@/hooks/useTypedForm";
 
 export default function TimeKeepingForm(props: any) {
   const accessToken = localStorage.getItem("accessToken");
+  // FIXME: Use response from useGetOfficesAction, don't use below useState:
+  // const [getOffice, setGetOffice] = useState([]);
+  // const [getOfficeShift, setGetOfficeShift] = useState([]);
   const [getOffice, setGetOffice] = useState([]);
   const [getOfficeShift, setGetOfficeShift] = useState([]);
   const [isDisable, setIsDisable] = useState(true);
@@ -33,6 +36,7 @@ export default function TimeKeepingForm(props: any) {
   const handleOfficeChange = (value: any) => {
     console.log(`selected ${value}`);
     setIsDisable(true);
+    // FIXME: Use buildXHR
     axios({
       method: "get",
       url: `${BASE_URL}/api/office-shifts?office_id=${value}`,
@@ -90,9 +94,9 @@ export default function TimeKeepingForm(props: any) {
                     <Option value={office.id} key={office.name}>
                       {office.name}
                     </Option>
-            ))}
+                  ))}
                 </Select>
-            )}
+              )}
             />
           </InputField>
         </div>
@@ -110,18 +114,14 @@ export default function TimeKeepingForm(props: any) {
                   onChange={handleOfficeShiftChange}
                 >
                   {getOfficeShift.map((officeShift: any) => (
-                    <Option
-                      value={officeShift.id}
-                      key={officeShift.id}
-                    >
+                    <Option value={officeShift.id} key={officeShift.id}>
                       {officeShift.name}
                     </Option>
-          ))}
+                  ))}
                 </Select>
-           )}
+              )}
             />
           </InputField>
-
         </div>
         <div className={classes.col}>
           <InputField label="Ghi chú" isRequired>
@@ -129,8 +129,13 @@ export default function TimeKeepingForm(props: any) {
               name="office_shifts_id"
               control={control}
               render={({ field }) => (
-                <TextArea {...field} showCount maxLength={100} onChange={onChange} />
-          )}
+                <TextArea
+                  {...field}
+                  showCount
+                  maxLength={100}
+                  onChange={onChange}
+                />
+              )}
             />
           </InputField>
         </div>

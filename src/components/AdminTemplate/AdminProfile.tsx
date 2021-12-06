@@ -12,10 +12,16 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import classes from "./AdminProfile.module.scss";
 
+/**
+ * FIXME: What is it? Why place this in /src/components?
+ */
 export default function AdminProfile() {
   // const [adminName, setAdminName] = useState("");
   const history = useHistory();
-  const { execute: getAdminProfile, response: adminProfile } = useGetAdminProfileAction();
+  const {
+    execute: getAdminProfile,
+    response: adminProfile,
+  } = useGetAdminProfileAction();
   const adminName = adminProfile?.data.name;
   useEffect(() => {
     getAdminProfile({

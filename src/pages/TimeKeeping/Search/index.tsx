@@ -1,9 +1,7 @@
 import React from "react";
 import { Form, Input, Button, Select, Row, Col } from "antd";
 
-interface Props {
-
-}
+interface Props {}
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -24,6 +22,7 @@ const formItemLayout = {
 };
 
 export const Search = (props: Props) => {
+  // FIXME: Use ReactHookForm, dont use antd Form
   const [form] = Form.useForm();
 
   return (

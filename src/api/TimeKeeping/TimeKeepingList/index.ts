@@ -1,17 +1,15 @@
 import { buildXHR } from "@/helpers";
 
- type TRequest = {
+type TRequest = {
   access_token: string;
- };
- type TResponse = {
+};
+type TResponse = {
+  // TODO: API response typescript
   data: any;
   pagination: any;
- };
+};
 
-export const useGetTimeKeepingList = buildXHR<
-TRequest,
-TResponse
->({
+export const useGetTimeKeepingList = buildXHR<TRequest, TResponse>({
   url: "/api/timekeeping/history-timekeeping",
   method: "GET",
 });

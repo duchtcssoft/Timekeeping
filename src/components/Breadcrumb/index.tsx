@@ -1,5 +1,8 @@
 import { Breadcrumb } from "antd";
 
+/**
+ * FIXME: What is is? Should it be placed in /components/molecules?
+ */
 const MainBreadcrumb = () => {
   const a = 1;
   return (
