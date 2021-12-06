@@ -37,8 +37,7 @@ export default function App() {
                   <Home />
                 ) : (
                   <Redirect to={ROUTES.SIGN_IN} />
-                )
-              }
+                )}
             />
           </Switch>
         </ReduxProvider>
