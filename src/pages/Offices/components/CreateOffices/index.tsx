@@ -52,7 +52,7 @@ export default function CreateOffices() {
         centered
         visible={visible}
         // onOk={(e: any) => handleAdd(console.log(e))}
-        // onCancel={() => setVisible(false)}
+        onCancel={() => setVisible(false)}
         width={1000}
         footer={<></>}
       >
