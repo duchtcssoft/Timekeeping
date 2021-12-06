@@ -12,6 +12,8 @@ import { TApiConfigs, TCallbackProps } from "@/types";
 import { AXIOS_INSTANCE } from "@/https/AxiosInstance";
 import { defaultHttpError, defaultHttpSuccess } from "@/utils/https";
 
+const DEFAULT_API_RESPONSE = {};
+
 /**
  * buildXHR
  * @description build a like-useAsync-hook for request API
@@ -23,8 +25,7 @@ import { defaultHttpError, defaultHttpSuccess } from "@/utils/https";
     password: string;
    };
    type TParams = {
-    email: string;
-    password: string;
+    someParam: string;
    };
    type TResponse = {
     access_token: string;
@@ -62,8 +63,6 @@ export const buildXHR = <
   ) => {
     const { data, params, cbSuccess, cbError } = cbProps || {};
     setLoading(true);
-    setResponse(null);
-    setError(null);
 
     return axiosInstance
       .request({
@@ -73,6 +72,7 @@ export const buildXHR = <
       })
       .then((response: AxiosResponse<TResponse>) => {
         setResponse(response.data);
+        setError(null);
         if (cbSuccess) cbSuccess(response.data);
         else defaultHttpSuccess();
       })
@@ -87,7 +87,7 @@ export const buildXHR = <
   return {
     execute,
     isLoading,
-    response,
+    response: (response || DEFAULT_API_RESPONSE) as ShallowExpand<TResponse>,
     error,
   };
 };
