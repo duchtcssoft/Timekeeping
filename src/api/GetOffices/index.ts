@@ -5,6 +5,7 @@ type TRequest = {
   access_token: string;
 };
 type TResponse = {
+  // TODO: API response typescript
   data: any;
 };
 export const useRequestOffices = buildXHR<TRequest, TResponse>({

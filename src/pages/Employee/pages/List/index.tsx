@@ -4,27 +4,27 @@ import { Table, Space, Input, Button } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { Search } from "../../molecules/Search";
 import axios from "axios";
-import { config } from "@/config/breare-token";
 
 interface EmployeeProps {
   // eslint-disable-next-line react/no-unused-prop-types
   id: number;
   // eslint-disable-next-line react/no-unused-prop-types
   name: string;
-   // eslint-disable-next-line react/no-unused-prop-types
+  // eslint-disable-next-line react/no-unused-prop-types
   email: string;
-   // eslint-disable-next-line react/no-unused-prop-types
+  // eslint-disable-next-line react/no-unused-prop-types
   phone: string;
-   // eslint-disable-next-line react/no-unused-prop-types
+  // eslint-disable-next-line react/no-unused-prop-types
   gender?: string;
-   // eslint-disable-next-line react/no-unused-prop-types
+  // eslint-disable-next-line react/no-unused-prop-types
   dateBirth?: string;
-   // eslint-disable-next-line react/no-unused-prop-types
+  // eslint-disable-next-line react/no-unused-prop-types
   address?: string;
-   // eslint-disable-next-line react/no-unused-prop-types
+  // eslint-disable-next-line react/no-unused-prop-types
   office?: string;
 }
 
+// FIXME: Is this file continue using? Why it has over 300 lines?
 const columns: ColumnsType<EmployeeProps> = [
   {
     key: "id",
@@ -282,10 +282,8 @@ export const Employee = (props: EmployeeProps) => {
 
   useEffect(() => {
     const getEmployeeList = async () => {
-      const result = await axios(
-        `${API_URL}/api/employes`,
-        config,
-      );
+      // FIXME: Use buildXHR, dont use axios like this
+      const result = await axios(`${API_URL}/api/employes`);
       console.log(result);
     };
 

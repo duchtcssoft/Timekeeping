@@ -29,7 +29,8 @@ import AdminProfile from "../AdminTemplate/AdminProfile";
 const { Header, Sider, Content } = Layout;
 
 /**
- * App
+ * MainLayout
+ * TODO: Split it to small piece components
  */
 interface MainLayoutProps {
   children: React.ReactNode;

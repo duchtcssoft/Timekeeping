@@ -19,7 +19,6 @@ export default function App() {
       <Suspense fallback="Suspensed">
         <ReduxProvider store={store}>
           <CssBaseline />
-
           <Switch>
             {appRoutes.map((route) => (
               <Route
@@ -29,17 +28,16 @@ export default function App() {
                 component={route.component}
               />
             ))}
+            {/* FIXME: Use another way to Redirect user if not logged in, note that sometime, user has a token in storage does not mean, they logged in */}
+            {/* Use cookie for storing token, don't use localstorage for that */}
             <Route
               path="/"
-              render={
-                () =>
-                  localStorage.getItem("accessToken") ? (
-                    <Home />
-                  ) : (
-                    <Redirect to={ROUTES.SIGN_IN} />
-                  )
-                // eslint-disable-next-line react/jsx-curly-newline
-              }
+              render={() =>
+                localStorage.getItem("accessToken") ? (
+                  <Home />
+                ) : (
+                  <Redirect to={ROUTES.SIGN_IN} />
+                )}
             />
           </Switch>
         </ReduxProvider>
