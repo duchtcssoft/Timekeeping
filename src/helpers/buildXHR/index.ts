@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/comma-dangle */
 // libs
 import { useState } from "react";
 import {
@@ -50,10 +49,10 @@ export const buildXHR = <
   TRequestData = AnyObject,
   TResponse = AnyObject,
   TRequestParams = AnyObject,
-  TRequestHeaders = AnyObject
+  TRequestHeaders = AnyObject,
 >(
   { headers, ...restConfigs }: TApiConfigs & AxiosRequestConfig,
-  axiosInstance: AxiosInstance = AXIOS_INSTANCE
+  axiosInstance: AxiosInstance = AXIOS_INSTANCE,
 ) => () => {
   const [isLoading, setLoading] = useState(false);
   const [response, setResponse] = useState<TResponse | null>(null);
@@ -65,7 +64,7 @@ export const buildXHR = <
       TRequestParams,
       TResponse,
       TRequestHeaders
-    >
+    >,
   ) => {
     const accessToken = localStorage.getItem("accessToken");
     const { data, params, cbSuccess, cbError } = cbProps || {};
