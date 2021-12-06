@@ -4,7 +4,7 @@ import { ROUTES } from "@/constants/routers";
 import ChangePassword from "@/pages/ChangePassword/ChangePassword";
 import ForgotPassword from "@/pages/ForgotPassword/ForgotPassword";
 // pages
-import Signin from "@/pages/SignIn/Signin";
+import Signin from "@/pages/SignIn";
 import Signup from "@/pages/Signup/Signup";
 import TimeKeeping from "@/pages/Home/TimeKeeping/TimeKeeping";
 
