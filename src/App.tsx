@@ -15,37 +15,35 @@ import Home from "./pages/Home";
  */
 export default function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Suspense fallback="Suspensed">
-          <ReduxProvider store={store}>
-            <CssBaseline />
+    <BrowserRouter>
+      <Suspense fallback="Suspensed">
+        <ReduxProvider store={store}>
+          <CssBaseline />
 
-            <Switch>
-              {appRoutes.map((route) => (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  exact={route.exact}
-                  component={route.component}
-                />
-              ))}
+          <Switch>
+            {appRoutes.map((route) => (
               <Route
-                path="/"
-                render={
-                  () =>
-                    localStorage.getItem("accessToken") ? (
-                      <Home />
-                    ) : (
-                      <Redirect to={ROUTES.SIGN_IN} />
-                    )
-                  // eslint-disable-next-line react/jsx-curly-newline
-                }
+                key={route.path}
+                path={route.path}
+                exact={route.exact}
+                component={route.component}
               />
-            </Switch>
-          </ReduxProvider>
-        </Suspense>
-      </BrowserRouter>
-    </>
+            ))}
+            <Route
+              path="/"
+              render={
+                () =>
+                  localStorage.getItem("accessToken") ? (
+                    <Home />
+                  ) : (
+                    <Redirect to={ROUTES.SIGN_IN} />
+                  )
+                // eslint-disable-next-line react/jsx-curly-newline
+              }
+            />
+          </Switch>
+        </ReduxProvider>
+      </Suspense>
+    </BrowserRouter>
   );
 }
