@@ -12,8 +12,6 @@ import { ROUTES } from "@/constants/routers";
 import MainLayout from "@/components/Layout/Layout";
 import TimeKeeping from "./TimeKeeping/TimeKeeping";
 
-// TODO: talk
-
 /**
  * Home
  */

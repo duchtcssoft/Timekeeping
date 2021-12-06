@@ -2,6 +2,7 @@ import { ROUTES } from "@/constants/routers";
 import { InputField } from "@/custom-field/InputField/InputField";
 import { useTypedForm } from "@/hooks/useTypedForm";
 import { Form, Input, InputNumber, Button, Select, Checkbox } from "antd";
+// FIXME: Dont use Controller, use useTypedForm
 import { Controller } from "react-hook-form";
 import { Link } from "react-router-dom";
 import classes from "./styles.module.scss";

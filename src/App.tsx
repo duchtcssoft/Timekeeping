@@ -7,8 +7,10 @@ import { CssBaseline } from "@mui/material";
 import appRoutes from "@/routers";
 // others
 import { store } from "@/redux/store";
+// FIXME: Use another way to Redirect user if not logged in, delete import ROUTES and Home below
 import { ROUTES } from "./constants/routers";
 import Home from "./pages/Home";
+import "@/styles/index.css";
 
 /**
  * App

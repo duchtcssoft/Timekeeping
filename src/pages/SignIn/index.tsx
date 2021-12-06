@@ -33,6 +33,8 @@ export default function Signin() {
       },
       cbError: (err) => {
         console.log(err);
+        // FIXME: We have thousand of other error, And this code like will log 1 error for all that error
+        // This is a very "obvious bug", How many bug like this are there in This source?
         message.error("Email or Password is incorrect");
       },
     });

@@ -16,6 +16,7 @@ export default function TimeKeeping() {
 
   const [message, setMessage] = useState(false);
   const { execute, isLoading, response, error } = useGetTimeKeepingList();
+  // FIXME: We don't need below timeKeepingList useState and total useState, use above response
   const [timeKeepingList, setTimeKeepingList] = useState([] as any);
   const [total, setTotal] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,6 +43,8 @@ export default function TimeKeeping() {
     });
     setCurrentPage(page);
   };
+
+  // FIXME: Bring this datasources to src/dataSources/[pageName]
   const columns: ColumnsType<TimeKeepingProps> = [
     {
       key: "id",
