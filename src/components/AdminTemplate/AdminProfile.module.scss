@@ -1,0 +1,12 @@
+.wrapper {
+  margin-right: 20px;
+  .menu_item {
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .list_item {
+    margin-left: 10px;
+  }
+}

@@ -2,8 +2,12 @@
 import * as yup from "yup";
 
 export const schemaSignin = yup
-  .object({
-    username: yup.string().required(),
-    password: yup.string().required(),
+  .object()
+  .shape({
+    email: yup
+      .string()
+      .email("Email is invalid")
+      .required("username is required"),
+    password: yup.string().required("password is required"),
   })
   .required();

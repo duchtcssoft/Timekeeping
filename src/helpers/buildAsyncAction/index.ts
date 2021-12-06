@@ -34,15 +34,27 @@ export const buildAsyncAction = <
   TRequestData = AnyObject,
   TResponse = AnyObject,
   TRequestParams = AnyObject,
+  // FIXME: Why there is a TRequestHeaders here?
+  TRequestHeaders = AnyObject,
 >(
-  configs: TAsyncActionConfigs<TRequestData, TResponse, TRequestParams>,
+  configs: TAsyncActionConfigs<
+    TRequestData,
+    TResponse,
+    TRequestParams,
+    TRequestHeaders
+  >,
 ) => () => {
   const dispatch = useDispatch();
   const { LOADING_LABEL, SUCCESS_LABEL, ERROR_LABEL, XHRHook } = configs;
   const { execute: executeXHR, isLoading, response, error } = XHRHook();
 
   const executeAction = (
-    props: TCallbackProps<TRequestData, TRequestParams, TResponse>,
+    props: TCallbackProps<
+      TRequestData,
+      TRequestParams,
+      TResponse,
+      TRequestHeaders
+    >,
   ) => {
     const { data, params, cbSuccess, cbError } = props;
 

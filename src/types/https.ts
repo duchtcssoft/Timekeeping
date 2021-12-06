@@ -24,18 +24,27 @@ export type TApiConfigs = {
   /** http method */
   method: THttpMethod;
 };
-
-export type TCallbackProps<TRequestData, TRequestParams, TResponse> = {
+// FIXME: Why there is a lot of TRequestHeaders here, should delete it or not?
+// eslint-disable-next-line @typescript-eslint/comma-dangle
+export type TCallbackProps<
+  TRequestData,
+  TRequestParams,
+  TResponse,
+  TRequestHeaders
+> = {
   data?: TRequestData;
   params?: TRequestParams;
+  headers?: TRequestHeaders;
   cbSuccess?: (responseData: TResponse) => void;
   cbError?: (errors: AxiosError) => void;
 };
 
+// eslint-disable-next-line @typescript-eslint/comma-dangle
 export type TAsyncActionConfigs<
   TRequestData = AnyObject,
   TResponse = AnyObject,
   TRequestParams = AnyObject,
+  TRequestHeaders = AnyObject
 > = {
   /** Labels for save data in Redux Store */
   LOADING_LABEL: string;
@@ -46,7 +55,12 @@ export type TAsyncActionConfigs<
   /** Async Hook built by function buildXHR */
   XHRHook: () => {
     execute: (
-      cbProps?: TCallbackProps<TRequestData, TRequestParams, TResponse>
+      cbProps?: TCallbackProps<
+        TRequestData,
+        TRequestParams,
+        TResponse,
+        TRequestHeaders
+      >
     ) => Promise<void>;
     isLoading: boolean;
     response: TResponse | null;
