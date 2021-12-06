@@ -2,7 +2,6 @@
 // import { Suspense } from "react";
 // import { BrowserRouter, Route, Switch } from "react-router-dom";
 // import { Provider as ReduxProvider } from "react-redux";
-// import { CssBaseline } from "@mui/material";
 // // routes
 // import appRoutes from "@/routers";
 // // others
