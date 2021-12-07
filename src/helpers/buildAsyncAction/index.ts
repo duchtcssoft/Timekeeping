@@ -87,6 +87,7 @@ export const buildAsyncAction = <
   return {
     execute: executeAction,
     isLoading,
+    // TODO: response: (response || DEFAULT_API_RESPONSE) as ShallowExpand<TResponse>,
     response,
     error,
   };
