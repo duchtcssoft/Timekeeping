@@ -2,26 +2,28 @@
 import { Suspense } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Provider as ReduxProvider } from "react-redux";
-import { CssBaseline } from "@mui/material";
 // routes
 import appRoutes from "@/routers";
 // others
 import { store } from "@/redux/store";
+// FIXME: Use another way to Redirect user if not logged in, delete import ROUTES and Home below
 import { ROUTES } from "./constants/routers";
 import Home from "./pages/Home";
+import "@/styles/index.css";
+import { CookiesProvider } from "react-cookie";
 
 /**
  * App
  */
+
 export default function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Suspense fallback="Suspensed">
-          <ReduxProvider store={store}>
-            <CssBaseline />
-
+    <BrowserRouter>
+      <Suspense fallback="Suspensed">
+        <ReduxProvider store={store}>
+          <CookiesProvider>
             <Switch>
+
               {appRoutes.map((route) => (
                 <Route
                   key={route.path}
@@ -30,22 +32,14 @@ export default function App() {
                   component={route.component}
                 />
               ))}
-              <Route
-                path="/"
-                render={
-                  () =>
-                    localStorage.getItem("accessToken") ? (
-                      <Home />
-                    ) : (
-                      <Redirect to={ROUTES.SIGN_IN} />
-                    )
-                  // eslint-disable-next-line react/jsx-curly-newline
-                }
-              />
+
+              {/* FIXME: Use another way to Redirect user if not logged in, note that sometime, user has a token in storage does not mean, they logged in */}
+              {/* Use cookie for storing token, don't use localstorage for that */}
+
             </Switch>
-          </ReduxProvider>
-        </Suspense>
-      </BrowserRouter>
-    </>
+          </CookiesProvider>
+        </ReduxProvider>
+      </Suspense>
+    </BrowserRouter>
   );
 }

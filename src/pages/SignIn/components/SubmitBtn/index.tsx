@@ -1,5 +1,5 @@
 // libs
-import { Button } from "@mui/material";
+import { Button } from "antd";
 // hooks
 import { useTypedForm } from "@/hooks/useTypedForm";
 
@@ -11,7 +11,6 @@ export default function SubmitBtn() {
 
   return (
     <Button
-      variant="contained"
       onClick={() => {
         const { email, password } = getValues();
         // TODO:

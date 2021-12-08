@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/comma-dangle */
 // libs
 import { useState } from "react";
 import {
@@ -12,6 +11,9 @@ import { TApiConfigs, TCallbackProps } from "@/types";
 // others
 import { AXIOS_INSTANCE } from "@/https/AxiosInstance";
 import { defaultHttpError, defaultHttpSuccess } from "@/utils/https";
+import { useCookies } from "react-cookie";
+
+const DEFAULT_API_RESPONSE = {};
 
 /**
  * buildXHR
@@ -24,8 +26,7 @@ import { defaultHttpError, defaultHttpSuccess } from "@/utils/https";
     password: string;
    };
    type TParams = {
-    email: string;
-    password: string;
+    someParam: string;
    };
    type TResponse = {
     access_token: string;
@@ -50,15 +51,14 @@ export const buildXHR = <
   TRequestData = AnyObject,
   TResponse = AnyObject,
   TRequestParams = AnyObject,
-  TRequestHeaders = AnyObject
+  TRequestHeaders = AnyObject,
 >(
-  configs: TApiConfigs & AxiosRequestConfig,
-  axiosInstance: AxiosInstance = AXIOS_INSTANCE
+  { headers, ...restConfigs }: TApiConfigs & AxiosRequestConfig,
+  axiosInstance: AxiosInstance = AXIOS_INSTANCE,
 ) => () => {
   const [isLoading, setLoading] = useState(false);
   const [response, setResponse] = useState<TResponse | null>(null);
   const [error, setError] = useState<AxiosError | null>(null);
-  const accessToken = localStorage.getItem("accessToken");
 
   const execute = (
     cbProps?: TCallbackProps<
@@ -66,24 +66,21 @@ export const buildXHR = <
       TRequestParams,
       TResponse,
       TRequestHeaders
-    >
+    >,
   ) => {
     const { data, params, cbSuccess, cbError } = cbProps || {};
     setLoading(true);
-    setResponse(null);
-    setError(null);
 
     return axiosInstance
       .request({
-        headers: {
-        Authorization: `Bearer ${accessToken}`,
-        },
+        headers,
         data,
         params,
-        ...configs,
+        ...restConfigs,
       })
       .then((response: AxiosResponse<TResponse>) => {
         setResponse(response.data);
+        setError(null);
         if (cbSuccess) cbSuccess(response.data);
         else defaultHttpSuccess();
       })
@@ -98,7 +95,7 @@ export const buildXHR = <
   return {
     execute,
     isLoading,
-    response,
+    response: (response || DEFAULT_API_RESPONSE) as ShallowExpand<TResponse>,
     error,
   };
 };

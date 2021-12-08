@@ -1,5 +1,8 @@
 import classes from "./Banner.module.scss";
 
+/**
+ * FIXME: What is is? Should it be placed in /components/molecules?
+ */
 export default function Banner(props: any) {
   return (
     <div className={classes.wrapper}>
