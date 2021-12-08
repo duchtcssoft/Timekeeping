@@ -5,7 +5,7 @@ type TRequest = {
   password: string;
 };
 type TResponse = {
-  access_token: string;
+  data: any;
 };
 export const useRequestLogin = buildXHR<TRequest, TResponse>({
   url: "/api/auth/login",

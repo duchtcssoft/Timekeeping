@@ -9,7 +9,6 @@ import { updateMagicNumber } from "@/redux/actions/example";
 import { notify } from "@/utils/notify";
 import { ROUTES } from "@/constants/routers";
 import MainLayout from "@/components/Layout/Layout";
-import TimeKeeping from "./TimeKeeping/TimeKeeping";
 
 /**
  * Home

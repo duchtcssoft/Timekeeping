@@ -11,6 +11,7 @@ import { TApiConfigs, TCallbackProps } from "@/types";
 // others
 import { AXIOS_INSTANCE } from "@/https/AxiosInstance";
 import { defaultHttpError, defaultHttpSuccess } from "@/utils/https";
+import { useCookies } from "react-cookie";
 
 const DEFAULT_API_RESPONSE = {};
 
@@ -67,16 +68,12 @@ export const buildXHR = <
       TRequestHeaders
     >,
   ) => {
-    const accessToken = localStorage.getItem("accessToken");
     const { data, params, cbSuccess, cbError } = cbProps || {};
     setLoading(true);
 
     return axiosInstance
       .request({
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          ...headers,
-        },
+        headers,
         data,
         params,
         ...restConfigs,

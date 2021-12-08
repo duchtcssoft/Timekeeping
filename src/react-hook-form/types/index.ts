@@ -29,4 +29,11 @@ export type TAllFormValues = {
     longitude: number;
     latitude: number;
   };
+  CheckOut: {
+    checkout_hour: number;
+    checkout_minutes: number;
+    office_id: string;
+    office_shifts_id: string;
+    checkout_note: string;
+  };
 };

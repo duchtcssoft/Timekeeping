@@ -22,7 +22,7 @@ import "@/styles/index.css";
 import "antd/dist/antd.css";
 import { ROUTES } from "@/constants/routers";
 import { useRouter } from "@/hooks/router/useRouter";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import AdminProfile from "../AdminTemplate/AdminProfile";
 
 const { Header, Sider, Content } = Layout;
@@ -38,9 +38,12 @@ interface MainLayoutProps {
 export default function MainLayout(props: MainLayoutProps) {
   const [collapsed, setCollapsed] = useState(false);
   const router = useRouter();
-
+  const history = useHistory();
   const toggle = () => {
     setCollapsed(!collapsed);
+  };
+  const handleClick = () => {
+    history.push(ROUTES.TIME_KEEPING);
   };
   return (
     <>
@@ -82,7 +85,7 @@ export default function MainLayout(props: MainLayoutProps) {
             <Menu.Item key="3" icon={<TeamOutlined />}>
               Nhân viên
             </Menu.Item>
-            <Menu.Item key="4" icon={<SolutionOutlined />}>
+            <Menu.Item key="4" icon={<SolutionOutlined />} onClick={handleClick}>
               Chấm công
             </Menu.Item>
             <Menu.Item key="5" icon={<AreaChartOutlined />}>

@@ -1,6 +1,6 @@
 // components
 // forms
-import { useRequestSignup } from "@/api/Signup";
+import { useRequestSignup } from "@/api/Auth/Signup";
 import Banner from "@/components/banner/Banner";
 import { ROUTES } from "@/constants/routers";
 import ReactHookForm from "@/providers/ReactHookForm";
