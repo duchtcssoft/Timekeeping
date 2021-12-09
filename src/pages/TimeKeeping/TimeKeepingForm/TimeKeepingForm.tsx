@@ -1,15 +1,16 @@
 import classes from "./TimeKeepingForm.module.scss";
-import { Button, Input, Select } from "antd";
+import { Button, Input, Select, Form, Modal } from "antd";
 import { InputField } from "@/custom-field/InputField/InputField";
 import { Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useTypedForm } from "@/hooks/useTypedForm";
+import { useHistory } from "react-router";
+import { ROUTES } from "@/constants/routers";
 
 export default function TimeKeepingForm(props: any) {
-  // const [isCheckOut, setIsCheckOut] = useState(false);
-  // useEffect(() => {
-  //   setIsCheckOut(props.isCheckout);
-  // }, []);
+  const { timeKeeping, offices, officeShifts, officeId, officeShiftId } = props;
+  const history = useHistory();
+  console.log("office Shift", officeShifts);
   const { Option } = Select;
   const { TextArea } = Input;
   const {
@@ -18,12 +19,11 @@ export default function TimeKeepingForm(props: any) {
     formState: { errors },
   } = useTypedForm("CheckIn");
   const onSubmit = (values: any) => {
-    console.log("form values: ", values);
   };
   return (
     <div className={classes.wrapper}>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Form onFinish={onSubmit}>
         <div className={classes.avatar}>
         </div>
         <h3
@@ -35,25 +35,21 @@ export default function TimeKeepingForm(props: any) {
         >
           {props.title}
         </h3>
+        <p className={classes.desc}>{props.desc}</p>
         <InputField label="Văn phòng làm việc">
           <Controller
             name="office_id"
             control={control}
             render={({ field }) => (
               props.isCheckOut === true ?
-                <Select
-                  {...field}
-                  disabled
-                  defaultValue={props.officeName}
-                  size="large"
-                  style={{ width: "100%" }}
-                  onChange={props.handleOfficeChange}
-                >
-                </Select>
+                <p className={classes.input}>{offices.map((office:any) => (
+                  officeId === office.id && office.name
+                ))}
+                </p>
               :
                 <Select
                   {...field}
-                  defaultValue="asf"
+                  defaultValue={props.getOffice?.id}
                   size="large"
                   style={{ width: "100%" }}
                   onChange={props.handleOfficeChange}
@@ -66,9 +62,6 @@ export default function TimeKeepingForm(props: any) {
                 </Select>
             )}
           />
-          {/* {errors.office_id && (
-            <span className={classes.required}>{errors.office_id.message}</span>
-          )} */}
         </InputField>
 
         <InputField label="Ca làm việc">
@@ -77,16 +70,10 @@ export default function TimeKeepingForm(props: any) {
             control={control}
             render={({ field }) => (
               props.isCheckOut === true ?
-                <Select
-                  {...field}
-                  defaultValue={props.officeShiftName}
-                  size="large"
-                  disabled
-                  style={{ width: "100%" }}
-                  onChange={props.handleOfficeShiftChange}
-                >
-
-                </Select>
+                <p className={classes.input}>{officeShifts.map((officeShift:any) => (
+                  officeShiftId === officeShift.id && officeShift.name
+              ))}
+                </p>
               :
 
                 <Select
@@ -104,9 +91,6 @@ export default function TimeKeepingForm(props: any) {
                 </Select>
             )}
           />
-          {/* {errors.office_shifts_id && (
-            <span className={classes.required}>{errors.office_shifts_id.message}</span>
-          )} */}
         </InputField>
 
         <InputField label="Ghi Chú">
@@ -125,18 +109,27 @@ export default function TimeKeepingForm(props: any) {
 
         </InputField>
 
-        <Button
-          loading={props.loading}
-          style={{ width: "100%", marginBottom: "20px" }}
-          type="primary"
-          htmlType="submit"
-          className="login-form-button"
-          onClick={props.handleClick}
-        >
-          Xác Nhận
-        </Button>
-
-      </form>
+        <div className={classes.btn_group}>
+          <Button
+            loading={props.loading}
+            style={{ width: "100%", marginBottom: "20px" }}
+            type="primary"
+            htmlType="submit"
+            onClick={props.handleClick}
+          >
+            Xác Nhận
+          </Button>
+          <Button
+            style={{ width: "100%", marginBottom: "20px" }}
+            onClick={() => history.push(ROUTES.TIME_KEEPING)}
+          >
+            Lịch Sử Chấm Công
+          </Button>
+        </div>
+        <Modal title="Bạn chưa làm đủ thời gian" visible={props.isModalVisible} onOk={props.handleOk} onCancel={props.handleCancel}>
+          <p>Vẫn muốn Check Out?</p>
+        </Modal>
+      </Form>
       <div className={classes.row}></div>
     </div>
   );

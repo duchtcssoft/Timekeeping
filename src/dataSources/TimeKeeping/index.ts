@@ -7,16 +7,7 @@ import { ColumnsType } from "antd/lib/table";
 //   console.log("num2: ", numArr2);
 
 export const columnsTimeKeeping: ColumnsType<TimeKeepingProps> = [
-  {
-    key: "user_id",
-    title: "Mã nhân viên",
-    dataIndex: "user_id",
-  },
-  {
-    key: "id",
-    title: "Tên Nhân viên",
-    dataIndex: "user_id",
-  },
+
   {
     key: "date",
     title: "Ngày",
@@ -55,7 +46,19 @@ export const columnsTimeKeeping: ColumnsType<TimeKeepingProps> = [
       "" : `${timeKeeping.checkout_hour} : ${timeKeeping.checkout_minutes}`
     ),
   },
-
+  {
+    key: "total_time",
+    title: "Tổng Thời Gian Làm Việc",
+    render: (timeKeeping) => (
+      timeKeeping.checkout === null ?
+      "" : `${
+        timeKeeping.checkout_hour >= timeKeeping.checkin_hour ?
+        Math.floor(((timeKeeping.checkout_hour - timeKeeping.checkin_hour) * 60 + (timeKeeping.checkout_minutes - timeKeeping.checkin_minutes)) / 60) :
+        Math.floor(((timeKeeping.checkout_hour + 24 - timeKeeping.checkin_hour) * 60 + (timeKeeping.checkout_minutes - timeKeeping.checkin_minutes)) / 60)
+      } :
+       ${Math.abs(((timeKeeping.checkout_hour - timeKeeping.checkin_hour) * 60 + (timeKeeping.checkout_minutes - timeKeeping.checkin_minutes)) % 60)}`
+    ),
+  },
   {
     key: "status",
     title: "Trạng thái",

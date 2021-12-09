@@ -1,5 +1,6 @@
 import { useGetAdminProfileAction } from "@/api/Auth/AdminProfile";
 import { ROUTES } from "@/constants/routers";
+import { deleteCookie } from "@/utils/cookies/deleteCookie";
 import {
   DownOutlined,
   GlobalOutlined,
@@ -7,7 +8,7 @@ import {
   LockOutlined,
 } from "@ant-design/icons";
 import { Dropdown, Menu } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useHistory } from "react-router";
 import classes from "./AdminProfile.module.scss";
 
@@ -32,6 +33,7 @@ export default function AdminProfile() {
     });
   }, []);
   const handleLogoutClick = () => {
+    deleteCookie("access_token");
     history.replace(ROUTES.SIGN_IN);
   };
 const handleChangePasswordClick = () => {

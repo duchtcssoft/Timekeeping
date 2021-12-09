@@ -6,6 +6,9 @@ type TRequest = {
   checkout_minutes: number;
   checkout_note: string;
 
+  longitude: number;
+  latitude: number;
+
   // checkout_hour: number;
   // checkout_minutes: number;
 };
@@ -15,7 +18,7 @@ type TResponse = {
 const token = getCookie("access_token");
 
 export const useRequestCheckOut = buildXHR<TRequest, TResponse>({
-  url: "/api/timekeeping/check-in",
+  url: "/api/timekeeping/check-out",
   method: "POST",
   headers: { Authorization: `Bearer ${token}` },
 

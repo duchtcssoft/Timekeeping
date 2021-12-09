@@ -35,5 +35,7 @@ export type TAllFormValues = {
     office_id: string;
     office_shifts_id: string;
     checkout_note: string;
+    longitude: number;
+    latitude: number;
   };
 };

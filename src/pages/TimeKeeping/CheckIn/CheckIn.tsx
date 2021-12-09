@@ -8,6 +8,7 @@ import { BASE_URL } from "@/https/AxiosInstance";
 import ReactHookForm from "@/providers/ReactHookForm";
 import { schemaTimekeeping } from "@/react-hook-form/validations/TimeKeeping";
 import getCookie from "@/utils/cookies/getCookies";
+import { message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
@@ -112,36 +113,40 @@ export default function CheckIn() {
   };
 
   console.log(getLatitude, getLongitude, currentHour, ":", currentMinute);
-
+console.log("input office:", inputOffice);
   const handleClick = () => {
-    requestCheckIn({
-      data: {
-        checkin_hour: currentHour,
-        checkin_minutes: currentMinute,
-        office_id: inputOffice,
-        office_shifts_id: inputOfficeShift,
-        checkin_note: inputNote,
-        latitude: getLatitude,
-        longitude: getLongitude,
+    if (inputOffice === 0 || inputOfficeShift === 0)
+    message.error("Chưa nhập đủ thông tin");
+    else {
+      requestCheckIn({
+        data: {
+          checkin_hour: currentHour,
+          checkin_minutes: currentMinute,
+          office_id: inputOffice,
+          office_shifts_id: inputOfficeShift,
+          checkin_note: inputNote,
+          latitude: getLatitude,
+          longitude: getLongitude,
+        },
+        cbSuccess: (res: any) => {
+          console.log("requsrt succes", res);
+          history.push(ROUTES.TIME_KEEPING);
+        },
+        cbError: (err) => {
+          if (err.response) {
+            console.log("response: ", err.response);
+            // message.error(err.response.data.error.message);
+          }
+          if (err.request) {
+            console.log(err.request);
+          }
+          // FIXME: We have thousand of other error, And this code like will log 1 error for all that error
+          // This is a very "obvious bug", How many bug like this are there in This source?
+        },
       },
-      cbSuccess: (res: any) => {
-        console.log(res);
-        history.push(ROUTES.TIME_KEEPING);
-      },
-      cbError: (err) => {
-        if (err.response) {
-          console.log("response: ", err.response);
-          // message.error(err.response.data.error.message);
-        }
-        if (err.request) {
-          console.log(err.request);
-        }
-        // FIXME: We have thousand of other error, And this code like will log 1 error for all that error
-        // This is a very "obvious bug", How many bug like this are there in This source?
-      },
-    },
 
-    );
+      );
+    }
   };
   return (
     <MainLayout>
@@ -149,6 +154,7 @@ export default function CheckIn() {
       <ReactHookForm validateSchema={schemaTimekeeping}>
         <TimeKeepingForm
           title="Chấm Công Vào"
+          desc="Thông Tin Check In"
           inputOffice={inputOffice}
           inputOfficeShift={inputOfficeShift}
           inputNote={inputNote}

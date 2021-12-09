@@ -8,5 +8,5 @@ export const ROUTES = {
   CHANGE_PASSWORD: "/changepassword",
   TIME_KEEPING: "/timekeeping",
   CHECK_IN: "/checkin",
-  CHECK_OUT: "checkout",
+  CHECK_OUT: "/checkout",
 };

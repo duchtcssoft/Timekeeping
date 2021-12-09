@@ -20,7 +20,9 @@ export default function TimeKeeping() {
 // FIXME: We don't need below timeKeepingList useState and total useState, use above response
   const [message, setMessage] = useState(false);
   const [total, setTotal] = useState(1);
-  const [offices, setOffices] = useState([]);
+  const [isCheckOut, setIsCheckOut] = useState(1);
+
+  console.log(isCheckOut);
 
   const { execute: getTimeKeepingList, isLoading, response: responseTimeKeepingList, error: timeKeepingError } = useGetTimeKeepingList();
   const { execute: getOffice, response: responseOffice, error: OfficeError } = useGetOfficesAction();
@@ -42,6 +44,7 @@ export default function TimeKeeping() {
     getTimeKeepingList({
       cbSuccess: (res) => {
         console.log("list cham cong: ", res.data);
+        setIsCheckOut(res.data[res.data.length - 1].checkout_status);
         // console.log(a.slice(0, 10));
         // setDate(res.data);
       },
@@ -51,7 +54,6 @@ export default function TimeKeeping() {
     getOffice({
       cbSuccess: (res) => {
         console.log("Office: ", res?.data);
-        setOffices(res.data);
       },
     });
   }, []);
@@ -67,28 +69,28 @@ export default function TimeKeeping() {
     });
     // setCurrentPage(page);
   };
-  // const numArr1 = [offices.map((num: any) => (num.id))];
-  // console.log("num1: ", numArr1);
-  // const numArr2 = [timeKeepingList.map((num: any) => (num.office_id))];
-  // console.log("num2: ", numArr2);
-
-  // const filteredNumArray = numArr1[0].filter(value => numArr2[0].includes(value)).filter((value, index, self) => self.indexOf(value) === index);
-  // console.log(filteredNumArray);
   return (
     <MainLayout>
-      {/* {offices.map((office: any) => (
-        <p key={office?.id}>  { filteredNumArray[0] === office?.id ? office?.name : ""}</p>
-      ))} */}
       <MainBreadcrumb />
       <Row justify="space-between">
+        <h2>Lịch Sử Chấm Công</h2>
+
         <Col sm={24} md={16}>
-          <Search />
         </Col>
         <Col>
-          <Button type="primary" onClick={() => (history.push(`${ROUTES.TIME_KEEPING}${ROUTES.CHECK_IN}`))}>
+          <Button
+            type="primary"
+            onClick={() => (history.push(`${ROUTES.TIME_KEEPING}${ROUTES.CHECK_IN}`))}
+            disabled={isCheckOut === 0}
+
+          >
             <CheckOutlined />Chấm Công Vào
           </Button>
-          <Button style={{ marginLeft: "10px" }} onClick={() => (history.push(`${ROUTES.TIME_KEEPING}${ROUTES.CHECK_OUT}`))}>
+          <Button
+            disabled={isCheckOut === 1}
+            style={{ marginLeft: "10px" }}
+            onClick={() => (history.push(`${ROUTES.TIME_KEEPING}${ROUTES.CHECK_OUT}`))}
+          >
             <CloseOutlined />Chấm Công Ra
           </Button>
           <TimeKeepingModal />
@@ -108,7 +110,7 @@ export default function TimeKeeping() {
           />
 
           <Row justify="end" style={{ marginTop: 30 }}>
-            <Pagination defaultCurrent={1} total={total} onChange={changePagination} />
+            <Pagination defaultCurrent={2} total={total} onChange={changePagination} />
           </Row>
         </>}
     </MainLayout>
