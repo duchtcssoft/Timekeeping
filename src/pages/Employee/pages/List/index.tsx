@@ -294,8 +294,6 @@ export const Employee = (props: EmployeeProps) => {
 
   return (
     <MainLayout>
-      <Search />
-
       <Table<EmployeeProps> columns={columns} dataSource={data} rowKey="id" />
     </MainLayout>
   );

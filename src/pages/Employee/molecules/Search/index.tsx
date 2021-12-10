@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Input, Button, Select } from "antd";
 
 interface Props {
-
+  label: string
 }
 
 export const Search = (props: Props) => {
@@ -16,8 +16,8 @@ export const Search = (props: Props) => {
         form={form}
         style={{ marginBottom: "20px" }}
       >
-        <Form.Item label="Tên" style={{ width: "20%" }}>
-          <Input placeholder="input placeholder" />
+        <Form.Item label={props.label} style={{ width: "20%" }}>
+          <Input />
         </Form.Item>
         <Form.Item label="Văn phòng" style={{ width: "20%" }}>
           <Select>

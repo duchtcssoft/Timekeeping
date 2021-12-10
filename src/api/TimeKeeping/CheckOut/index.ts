@@ -6,20 +6,23 @@ type TRequest = {
   checkout_minutes: number;
   checkout_note: string;
 
-  longitude: number;
-  latitude: number;
+  longitude: string;
+  latitude: string;
 
   // checkout_hour: number;
   // checkout_minutes: number;
+};
+
+type TParams = {
+  id: number;
 };
 type TResponse = {
   data: any;
 };
 const token = getCookie("access_token");
 
-export const useRequestCheckOut = buildXHR<TRequest, TResponse>({
-  url: "/api/timekeeping/check-out",
+export const useRequestCheckOut = buildXHR<TRequest, TResponse, TParams>({
+  url: `/api/timekeeping/check-out/${""}`,
   method: "POST",
   headers: { Authorization: `Bearer ${token}` },
-
 });

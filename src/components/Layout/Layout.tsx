@@ -1,29 +1,16 @@
-// libs
-// import { Suspense } from "react";
-// import { BrowserRouter, Route, Switch } from "react-router-dom";
-// import { Provider as ReduxProvider } from "react-redux";
-// // routes
-// import appRoutes from "@/routers";
-// // others
-// import { store } from "@/redux/store";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  HomeOutlined,
-  BankOutlined,
-  TeamOutlined,
-  SolutionOutlined,
-  AreaChartOutlined,
-} from "@ant-design/icons";
-import { Button, Layout, Menu } from "antd";
-import React, { useState } from "react";
-import styles from "./layout.module.scss";
-import "@/styles/index.css";
-import "antd/dist/antd.css";
 import { ROUTES } from "@/constants/routers";
 import { useRouter } from "@/hooks/router/useRouter";
+import "@/styles/index.css";
+import {
+  AreaChartOutlined, BankOutlined, HomeOutlined, MenuFoldOutlined,
+  MenuUnfoldOutlined, SolutionOutlined, TeamOutlined,
+} from "@ant-design/icons";
+import { Layout, Menu } from "antd";
+import "antd/dist/antd.css";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import AdminProfile from "../AdminTemplate/AdminProfile";
+import styles from "./layout.module.scss";
 
 const { Header, Sider, Content } = Layout;
 
@@ -85,7 +72,11 @@ export default function MainLayout(props: MainLayoutProps) {
             <Menu.Item key="3" icon={<TeamOutlined />}>
               Nhân viên
             </Menu.Item>
-            <Menu.Item key="4" icon={<SolutionOutlined />} onClick={handleClick}>
+            <Menu.Item
+              key="4"
+              icon={<SolutionOutlined />}
+              onClick={handleClick}
+            >
               Chấm công
             </Menu.Item>
             <Menu.Item key="5" icon={<AreaChartOutlined />}>

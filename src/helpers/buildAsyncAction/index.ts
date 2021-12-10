@@ -34,14 +34,11 @@ export const buildAsyncAction = <
   TRequestData = AnyObject,
   TResponse = AnyObject,
   TRequestParams = AnyObject,
-  // FIXME: Why there is a TRequestHeaders here?
-  TRequestHeaders = AnyObject,
 >(
   configs: TAsyncActionConfigs<
     TRequestData,
     TResponse,
-    TRequestParams,
-    TRequestHeaders
+    TRequestParams
   >,
 ) => () => {
   const dispatch = useDispatch();
@@ -52,8 +49,7 @@ export const buildAsyncAction = <
     props: TCallbackProps<
       TRequestData,
       TRequestParams,
-      TResponse,
-      TRequestHeaders
+      TResponse
     >,
   ) => {
     const { data, params, cbSuccess, cbError } = props;

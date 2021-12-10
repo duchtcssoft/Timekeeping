@@ -51,7 +51,6 @@ export const buildXHR = <
   TRequestData = AnyObject,
   TResponse = AnyObject,
   TRequestParams = AnyObject,
-  TRequestHeaders = AnyObject,
 >(
   { headers, ...restConfigs }: TApiConfigs & AxiosRequestConfig,
   axiosInstance: AxiosInstance = AXIOS_INSTANCE,
@@ -64,8 +63,7 @@ export const buildXHR = <
     cbProps?: TCallbackProps<
       TRequestData,
       TRequestParams,
-      TResponse,
-      TRequestHeaders
+      TResponse
     >,
   ) => {
     const { data, params, cbSuccess, cbError } = cbProps || {};

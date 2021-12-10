@@ -1,5 +1,7 @@
 .wrapper{
-  width: 400px;
+  width: 700px;
+  padding: 50px 120px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   .input{
     padding: 10px;
     border: 1px solid rgb(184, 184, 184);
@@ -10,6 +12,16 @@
     font-weight: 600px;
     font-size: 20px;
   }
-  .btn_group{
+  .button{
+    margin: 20px 0;
+    width: 200px;
+
+  }
+  .link_group{
+    display: flex;
+    justify-content: space-between;
+    .link{
+      text-decoration: underline;
+    }
   }
 }

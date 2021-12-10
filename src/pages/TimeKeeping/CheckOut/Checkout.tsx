@@ -1,5 +1,6 @@
 /* eslint-disable no-alert */
 import { useGetOfficesAction } from "@/api/Offices/GetOffices";
+import { useGetOfficeShifts } from "@/api/OfficeShifts/GetOfficeShifts";
 import { useRequestCheckOut } from "@/api/TimeKeeping/CheckOut";
 import { useGetTimeKeepingList } from "@/api/TimeKeeping/TimeKeepingList";
 import MainLayout from "@/components/Layout/Layout";
@@ -24,7 +25,7 @@ export default function Checkout() {
   const [officeShiftId, setOfficeShiftId] = useState(0);
   const [timeKeeping, setTimeKeeping] = useState([] as any);
   const [offices, setOffices] = useState([] as any);
-  const [officeShifts, setOfficeShifts] = useState([] as any);
+  const [getOfficeShift, setGetOfficeShift] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [checkInHour, setCheckInHour] = useState(0);
   const [checkInMinute, setCheckInMinute] = useState(0);
@@ -32,41 +33,41 @@ export default function Checkout() {
   const { execute: getTimeKeepingList, response: responseTimeKeepingList, error: timeKeepingError } = useGetTimeKeepingList();
   const { execute: getOffices, response: listOffices } = useGetOfficesAction();
   const { execute: requestCheckOut, isLoading } = useRequestCheckOut();
-
-// ===============
+  const { execute: getOfficeShifts, response: responseOfficeShifts } = useGetOfficeShifts();
+// Get current time
   const today = new Date();
   const currentHour = today.getHours();
   const currentMinute = today.getMinutes();
 
+  // Call API Component did mount
   useEffect(() => {
     getOffices({
-      cbSuccess: (res) => {
+      cbSuccess: (res: any) => {
         setOffices(res.data);
       },
     });
   }, []);
-  const token = getCookie("access_token");
 
   useEffect(() => {
   if (officeId !== 0) {
-    axios({
-      method: "get",
-      url: `${BASE_URL}/api/office-shifts?office_id=${officeId}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
+    getOfficeShifts({
+      params: {
+        office_id: officeId,
       },
-    })
-      .then((res) => {
-        setOfficeShifts(res.data.data);
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+      cbSuccess: (res: any) => {
+        // This is on success callback
+        console.log(res);
+        setGetOfficeShift(res.data);
+      },
+      cbError: (err: any) => {
+        console.log(err);
+      },
+    });
 }
   }, [officeId]);
   useEffect(() => {
     getTimeKeepingList({
-      cbSuccess: (res) => {
+      cbSuccess: (res: any) => {
         setTimeKeeping(res.data);
         // console.log("data inner: ", res.data[lastElement].id);
         setTimeKeepingId(res.data[res.data.length - 1].id);
@@ -77,6 +78,8 @@ export default function Checkout() {
       },
     });
   }, []);
+
+  // Get Location
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -113,40 +116,34 @@ export default function Checkout() {
     }
   };
 
+  // Handling Event
   const totalTime = Math.abs((currentHour * 60 + currentMinute) - (checkInHour * 60 + checkInMinute));
+  const missingTime = 480 - totalTime;
   console.log("total time: ", totalTime);
   const handleClick = () => {
-    // FIXME: Use buildXHR
     if (totalTime < 540)
     setIsModalVisible(true);
     else
-    axios({
-      method: "post",
-      url: `${BASE_URL}/api/timekeeping/check-out/${timeKeepingId}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    requestCheckOut({
       data: {
-        checkout_hour: currentHour,
-        checkout_minutes: currentMinute,
-        checkout_note: inputNote,
-        latitude: getLatitude,
-        longitude: getLongitude,
-     },
-    })
-      .then((res) => {
-        console.log("cuccess");
-        history.push(ROUTES.TIME_KEEPING);
-      })
-      .catch((err) => {
+            checkout_hour: currentHour,
+            checkout_minutes: currentMinute,
+            checkout_note: inputNote,
+            latitude: getLatitude,
+            longitude: getLongitude,
+         },
+      cbSuccess: (res: any) => {
+      },
+      cbError: (err: any) => {
         if (err.response) {
-        console.log("response: ", err.response);
-         message.error(err.response.data.error.message);
-       }
-       if (err.request) {
-       console.log(err.request);
-       }
-      });
+              console.log("response: ", err.response);
+               message.error(err.response.data.error.message);
+             }
+             if (err.request) {
+             console.log(err.request);
+             }
+      },
+    });
   };
 
   const onNoteChange = (e: any) => {
@@ -154,33 +151,27 @@ export default function Checkout() {
     setInputNote(e.target.value);
   };
   const handleOk = () => {
-    axios({
-      method: "post",
-      url: `${BASE_URL}/api/timekeeping/check-out/${timeKeepingId}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    requestCheckOut({
+      // url: `/api/timekeeping/check-out/${timeKeepingId}`,
       data: {
-        checkout_hour: currentHour,
-        checkout_minutes: currentMinute,
-        checkout_note: inputNote,
-        latitude: getLatitude,
-        longitude: getLongitude,
-     },
-    })
-      .then((res) => {
-        console.log("cuccess");
-        history.push(ROUTES.TIME_KEEPING);
-      })
-      .catch((err) => {
+            checkout_hour: currentHour,
+            checkout_minutes: currentMinute,
+            checkout_note: inputNote,
+            latitude: getLatitude,
+            longitude: getLongitude,
+         },
+      cbSuccess: (res: any) => {
+      },
+      cbError: (err: any) => {
         if (err.response) {
-        console.log("response: ", err.response);
-         message.error(err.response.data.error.message);
-       }
-       if (err.request) {
-       console.log(err.request);
-       }
-      });
+              console.log("response: ", err.response);
+              //  message.error(err.response.data.error.message);
+             }
+             if (err.request) {
+             console.log(err.request);
+             }
+      },
+    });
     setIsModalVisible(false);
   };
   const handleCancel = () => {
@@ -195,8 +186,7 @@ export default function Checkout() {
           officeId={officeId}
           officeShiftId={officeShiftId}
           offices={offices}
-          officeShifts={officeShifts}
-          // officeName={officeName}
+          getOfficeShift={getOfficeShift}
           handleClick={handleClick}
           onNoteChange={onNoteChange}
           isCheckOut
@@ -205,6 +195,7 @@ export default function Checkout() {
           handleOk={handleOk}
           handleCancel={handleCancel}
           isModalVisible={isModalVisible}
+          missingTime={missingTime}
         />
       </ReactHookForm>
     </MainLayout>

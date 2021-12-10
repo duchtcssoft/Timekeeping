@@ -5,13 +5,13 @@ import MainLayout from "@/components/Layout/Layout";
 import { ROUTES } from "@/constants/routers";
 import { columnsTimeKeeping } from "@/dataSources/TimeKeeping";
 import { TimeKeepingProps } from "@/models/TimeKeeping/TimeKeepingProps";
-import { Search } from "@/pages/Employee/molecules/Search";
 import { setTimeKeeping, updateModalStatus } from "@/redux/actions/timeKeeping";
 import { CheckOutlined, CloseOutlined, LoadingOutlined } from "@ant-design/icons";
-import { Alert, Button, Col, Pagination, Row, Table } from "antd";
+import { Alert, Button, Col, Pagination, Row, Input, Table } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
+import { Search } from "../Employee/molecules/Search";
 import TimeKeepingModal from "./Modal";
 
 export default function TimeKeeping() {
@@ -73,21 +73,21 @@ export default function TimeKeeping() {
     <MainLayout>
       <MainBreadcrumb />
       <Row justify="space-between">
-        <h2>Lịch Sử Chấm Công</h2>
-
         <Col sm={24} md={16}>
+          <Search label="Ngày" />
         </Col>
         <Col>
           <Button
+            disabled={isCheckOut === 0}
             type="primary"
             onClick={() => (history.push(`${ROUTES.TIME_KEEPING}${ROUTES.CHECK_IN}`))}
-            disabled={isCheckOut === 0}
 
           >
             <CheckOutlined />Chấm Công Vào
           </Button>
           <Button
             disabled={isCheckOut === 1}
+            type="primary"
             style={{ marginLeft: "10px" }}
             onClick={() => (history.push(`${ROUTES.TIME_KEEPING}${ROUTES.CHECK_OUT}`))}
           >
@@ -101,6 +101,7 @@ export default function TimeKeeping() {
         ? <Alert message="Đã có lỗi xảy ra" type="error" />
         :
         <>
+          <h2>Lịch Sử Chấm Công</h2>
           <Table<TimeKeepingProps>
             columns={columnsTimeKeeping}
             dataSource={timeKeepingList}

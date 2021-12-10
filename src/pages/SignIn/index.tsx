@@ -35,7 +35,7 @@ export default function Signin() {
         console.log(res);
         history.replace(ROUTES.HOME);
       },
-      cbError: (err) => {
+      cbError: (err: any) => {
         if (err.response) {
           // console.log("response: ", err.response);
           // message.error(err.response.data.error.message);

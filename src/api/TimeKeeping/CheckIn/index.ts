@@ -22,5 +22,4 @@ export const useRequestCheckIn = buildXHR<TRequest, TResponse>({
   url: "/api/timekeeping/check-in",
   method: "POST",
   headers: { Authorization: `Bearer ${token}` },
-
 });

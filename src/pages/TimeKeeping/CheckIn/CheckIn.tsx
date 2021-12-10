@@ -1,7 +1,9 @@
 /* eslint-disable no-alert */
 
 import { useGetOfficesAction } from "@/api/Offices/GetOffices";
+import { useGetOfficeShifts } from "@/api/OfficeShifts/GetOfficeShifts";
 import { useRequestCheckIn } from "@/api/TimeKeeping/CheckIn";
+import { useGetTimeKeepingList } from "@/api/TimeKeeping/TimeKeepingList";
 import MainLayout from "@/components/Layout/Layout";
 import { ROUTES } from "@/constants/routers";
 import { BASE_URL } from "@/https/AxiosInstance";
@@ -19,17 +21,24 @@ export default function CheckIn() {
   const [getLongitude, setGetLongitude] = useState("");
   const [inputOffice, setInputOffice] = useState(0);
   const [inputOfficeShift, setInputOfficeShift] = useState(0);
+  const [officeId, setOfficeId] = useState(0);
   const [inputNote, setInputNote] = useState("");
   const [getOffice, setGetOffice] = useState([]);
   const [getOfficeShift, setGetOfficeShift] = useState([]);
   const [isDisable, setIsDisable] = useState(true);
   const { execute: getOffices } = useGetOfficesAction();
   const { execute: requestCheckIn, isLoading } = useRequestCheckIn();
+  const { execute: getOfficeShifts, response: responseOfficeShifts } = useGetOfficeShifts();
+  const { execute: getTimeKeepings, response: responseTimeKeepings } = useGetTimeKeepingList();
+
   const history = useHistory();
 
+  // Get Current Time
   const today = new Date();
   const currentHour = today.getHours();
   const currentMinute = today.getMinutes();
+
+  // Get Location
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -64,7 +73,7 @@ export default function CheckIn() {
         alert("An unknown error occurred.");
     }
   };
-
+// Call API Component did mount
   useEffect(() => {
     getOffices({
       cbSuccess: (res: any) => {
@@ -76,31 +85,35 @@ export default function CheckIn() {
       },
     });
   }, []);
-
-  const token = getCookie("access_token");
-  const handleOfficeChange = (value: any) => {
-    console.log(`selected ${value}`);
-    setInputOffice(value);
-
-    setIsDisable(true);
-    // FIXME: Use buildXHR
-
-    axios({
-      method: "get",
-      url: `${BASE_URL}/api/office-shifts?office_id=${value}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
+  useEffect(() => {
+    getTimeKeepings({
+      cbSuccess: (res: any) => {
+        setOfficeId(res.data[res.data.length - 1].office_id);
       },
-    })
-      .then((res) => {
-        setGetOfficeShift(res.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setIsDisable(false);
-      });
+      cbError: (err: any) => {
+        console.log(err);
+      },
+    });
+  }, []);
+
+  // Handling Event
+  const handleOfficeChange = (officeId: any) => {
+    console.log(`selected ${officeId}`);
+    setInputOffice(officeId);
+    getOfficeShifts({
+      params: {
+        office_id: officeId,
+      },
+      cbSuccess: (res: any) => {
+        // This is on success callback
+        console.log(res);
+        setGetOfficeShift(res.data);
+         setIsDisable(false);
+      },
+      cbError: (err: any) => {
+        console.log(err);
+      },
+    });
   };
 
   const handleOfficeShiftChange = (value: any) => {
@@ -112,8 +125,6 @@ export default function CheckIn() {
     setInputNote(e.target.value);
   };
 
-  console.log(getLatitude, getLongitude, currentHour, ":", currentMinute);
-console.log("input office:", inputOffice);
   const handleClick = () => {
     if (inputOffice === 0 || inputOfficeShift === 0)
     message.error("Chưa nhập đủ thông tin");
@@ -135,7 +146,7 @@ console.log("input office:", inputOffice);
         cbError: (err) => {
           if (err.response) {
             console.log("response: ", err.response);
-            // message.error(err.response.data.error.message);
+            message.error(err.response.data.error.message);
           }
           if (err.request) {
             console.log(err.request);
@@ -160,6 +171,7 @@ console.log("input office:", inputOffice);
           inputNote={inputNote}
           handleClick={handleClick}
           getOffice={getOffice}
+          officeId={officeId}
           getOfficeShift={getOfficeShift}
           handleOfficeChange={handleOfficeChange}
           handleOfficeShiftChange={handleOfficeShiftChange}

@@ -5,6 +5,9 @@ import getCookie from "@/utils/cookies/getCookies";
 type TRequest = {
   access_token: string;
 };
+type TParams = {
+  office_id: number;
+ };
 type TResponse = {
   // TODO: Add real API response typescript
   data: any;
@@ -12,10 +15,8 @@ type TResponse = {
 const token = getCookie("access_token");
 
 export const useGetOfficeShifts =
-(id: number | undefined) =>
-buildXHR<TRequest, TResponse>({
-  url: `/api/office-shifts?office_id=${id}`,
+buildXHR<TRequest, TResponse, TParams>({
+  url: "/api/office-shifts",
   method: "GET",
   headers: { Authorization: `Bearer ${token}` },
-
 });

@@ -1,7 +1,9 @@
 import React from "react";
 import { Form, Input, Button, Select, Row, Col } from "antd";
 
-interface Props {}
+interface Props {
+  label: string
+}
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -35,8 +37,8 @@ export const Search = (props: Props) => {
       >
         <Row style={{ width: "100%" }} justify="start">
           <Col sm={24} md={10} xl={6} style={{ marginBottom: 15 }}>
-            <Form.Item label="Tên">
-              <Input placeholder="input placeholder" />
+            <Form.Item label={props.label}>
+              <Input placeholder="" />
             </Form.Item>
           </Col>
           <Col sm={24} md={10} xl={6}>
