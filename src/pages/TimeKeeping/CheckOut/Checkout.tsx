@@ -117,6 +117,7 @@ export default function Checkout() {
   };
 
   // Handling Event
+  const token = getCookie("access_token");
   const totalTime = Math.abs((currentHour * 60 + currentMinute) - (checkInHour * 60 + checkInMinute));
   const missingTime = 480 - totalTime;
   console.log("total time: ", totalTime);
@@ -124,26 +125,53 @@ export default function Checkout() {
     if (totalTime < 540)
     setIsModalVisible(true);
     else
-    requestCheckOut({
+    axios({
+      method: "post",
+      url: `${BASE_URL}/api/timekeeping/check-out/${timeKeepingId}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       data: {
-            checkout_hour: currentHour,
-            checkout_minutes: currentMinute,
-            checkout_note: inputNote,
-            latitude: getLatitude,
-            longitude: getLongitude,
-         },
-      cbSuccess: (res: any) => {
-      },
-      cbError: (err: any) => {
+        checkout_hour: currentHour,
+        checkout_minutes: currentMinute,
+        checkout_note: inputNote,
+        latitude: getLatitude,
+        longitude: getLongitude,
+     },
+    })
+      .then((res) => {
+        console.log("cuccess");
+        history.push(ROUTES.TIME_KEEPING);
+      })
+      .catch((err) => {
         if (err.response) {
-              console.log("response: ", err.response);
-               message.error(err.response.data.error.message);
-             }
-             if (err.request) {
-             console.log(err.request);
-             }
-      },
-    });
+        console.log("response: ", err.response);
+         message.error(err.response.data.error.message);
+       }
+       if (err.request) {
+       console.log(err.request);
+       }
+      });
+    // requestCheckOut({
+    //   data: {
+    //         checkout_hour: currentHour,
+    //         checkout_minutes: currentMinute,
+    //         checkout_note: inputNote,
+    //         latitude: getLatitude,
+    //         longitude: getLongitude,
+    //      },
+    //   cbSuccess: (res: any) => {
+    //   },
+    //   cbError: (err: any) => {
+    //     if (err.response) {
+    //           console.log("response: ", err.response);
+    //            message.error(err.response.data.error.message);
+    //          }
+    //          if (err.request) {
+    //          console.log(err.request);
+    //          }
+    //   },
+    // });
   };
 
   const onNoteChange = (e: any) => {
@@ -151,27 +179,56 @@ export default function Checkout() {
     setInputNote(e.target.value);
   };
   const handleOk = () => {
-    requestCheckOut({
-      // url: `/api/timekeeping/check-out/${timeKeepingId}`,
+    axios({
+      method: "post",
+      url: `${BASE_URL}/api/timekeeping/check-out/${timeKeepingId}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       data: {
-            checkout_hour: currentHour,
-            checkout_minutes: currentMinute,
-            checkout_note: inputNote,
-            latitude: getLatitude,
-            longitude: getLongitude,
-         },
-      cbSuccess: (res: any) => {
-      },
-      cbError: (err: any) => {
+        checkout_hour: currentHour,
+        checkout_minutes: currentMinute,
+        checkout_note: inputNote,
+        latitude: getLatitude,
+        longitude: getLongitude,
+     },
+    })
+      .then((res) => {
+        console.log("cuccess");
+        history.push(ROUTES.TIME_KEEPING);
+      })
+      .catch((err) => {
         if (err.response) {
-              console.log("response: ", err.response);
-              //  message.error(err.response.data.error.message);
-             }
-             if (err.request) {
-             console.log(err.request);
-             }
-      },
-    });
+        console.log("response: ", err.response);
+         message.error(err.response.data.error.message);
+       }
+       if (err.request) {
+       console.log(err.request);
+       }
+      });
+
+    // requestCheckOut({
+
+    //   // url: `/api/timekeeping/check-out/${timeKeepingId}`,
+    //   data: {
+    //         checkout_hour: currentHour,
+    //         checkout_minutes: currentMinute,
+    //         checkout_note: inputNote,
+    //         latitude: getLatitude,
+    //         longitude: getLongitude,
+    //      },
+    //   cbSuccess: (res: any) => {
+    //   },
+    //   cbError: (err: any) => {
+    //     if (err.response) {
+    //           console.log("response: ", err.response);
+    //           //  message.error(err.response.data.error.message);
+    //          }
+    //          if (err.request) {
+    //          console.log(err.request);
+    //          }
+    //   },
+    // });
     setIsModalVisible(false);
   };
   const handleCancel = () => {

@@ -19,13 +19,6 @@ const appRoutes = [
     path: ROUTES.HOME,
     exact: true,
     component: Home,
-
-    // render={() =>
-    //   cookies.accessToken ? (
-    //     <Home />
-    //   ) : (
-    //     <Redirect to={ROUTES.SIGN_IN} />
-    //   )}
   },
   {
     path: ROUTES.SIGN_IN,

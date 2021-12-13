@@ -1,4 +1,5 @@
 import { buildXHR } from "@/helpers";
+import { TriggerConfig } from "react-hook-form";
 
 type TRequest = {
   name: string;

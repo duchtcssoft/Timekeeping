@@ -9,21 +9,19 @@ import { setTimeKeeping, updateModalStatus } from "@/redux/actions/timeKeeping";
 import { CheckOutlined, CloseOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Alert, Button, Col, Pagination, Row, Input, Table } from "antd";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Search } from "../Employee/molecules/Search";
 import TimeKeepingModal from "./Modal";
 
 export default function TimeKeeping() {
-  const dispatch = useDispatch();
   const history = useHistory();
 // FIXME: We don't need below timeKeepingList useState and total useState, use above response
   const [message, setMessage] = useState(false);
   const [total, setTotal] = useState(1);
   const [isCheckOut, setIsCheckOut] = useState(1);
 
-  console.log(isCheckOut);
-
+  const dispatch = useDispatch();
   const { execute: getTimeKeepingList, isLoading, response: responseTimeKeepingList, error: timeKeepingError } = useGetTimeKeepingList();
   const { execute: getOffice, response: responseOffice, error: OfficeError } = useGetOfficesAction();
 
@@ -38,13 +36,14 @@ export default function TimeKeeping() {
   };
 
   const timeKeepingList = responseTimeKeepingList?.data;
-  // const offices = responseOffice?.data;
+  const offices = responseOffice?.data;
 
   useEffect(() => {
     getTimeKeepingList({
-      cbSuccess: (res) => {
+      cbSuccess: (res: any) => {
         console.log("list cham cong: ", res.data);
         setIsCheckOut(res.data[res.data.length - 1].checkout_status);
+        dispatch(setTimeKeeping(res.data));
         // console.log(a.slice(0, 10));
         // setDate(res.data);
       },
@@ -52,7 +51,7 @@ export default function TimeKeeping() {
   }, []);
   useEffect(() => {
     getOffice({
-      cbSuccess: (res) => {
+      cbSuccess: (res: any) => {
         console.log("Office: ", res?.data);
       },
     });
@@ -63,18 +62,18 @@ export default function TimeKeeping() {
       params: {
         page,
       },
-      cbSuccess: (res) => {
+      cbSuccess: (res: any) => {
         setTotal(res.pagination.total);
       },
     });
     // setCurrentPage(page);
   };
+
   return (
     <MainLayout>
       <MainBreadcrumb />
       <Row justify="space-between">
         <Col sm={24} md={16}>
-          <Search label="Ngày" />
         </Col>
         <Col>
           <Button

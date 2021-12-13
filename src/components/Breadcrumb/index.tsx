@@ -1,9 +1,13 @@
+import { useStore } from "@/hooks/useStore";
 import { Breadcrumb } from "antd";
 
 /**
  * FIXME: What is is? Should it be placed in /components/molecules?
  */
+
 const MainBreadcrumb = () => {
+const ac = useStore("TimeKeeping", "timeKeepingReducer");
+console.log("ac", ac.timeKeepingList);
   const a = 1;
   return (
     <Breadcrumb style={{ marginBottom: 30 }}>

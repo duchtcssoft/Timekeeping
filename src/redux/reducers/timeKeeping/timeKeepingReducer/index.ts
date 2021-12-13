@@ -3,7 +3,7 @@ import { TIME_KEEPING_LABELS } from "@/redux/actionLabels";
 
 type TREDUCER = {
   timeKeeping: TimeKeepingProps | null;
-  timeKeepingList: TimeKeepingProps[]
+  timeKeepingList: TimeKeepingProps[];
 };
 
 const initialState: Expand<TREDUCER> = {
@@ -13,13 +13,14 @@ const initialState: Expand<TREDUCER> = {
 
 export function timeKeepingReducer(
   state = initialState,
-  { type, payload }: { type: string; payload: TREDUCER },
-) {
+  { type, payload }: { type: string; payload: any },
+): TREDUCER {
+  console.log("payload: ", payload);
   switch (type) {
     case TIME_KEEPING_LABELS.LIST_TIME_KEEPING: {
       return {
         ...state,
-        ...payload,
+        timeKeepingList: payload,
       };
     }
     default: {

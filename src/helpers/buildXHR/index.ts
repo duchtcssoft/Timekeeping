@@ -11,7 +11,6 @@ import { TApiConfigs, TCallbackProps } from "@/types";
 // others
 import { AXIOS_INSTANCE } from "@/https/AxiosInstance";
 import { defaultHttpError, defaultHttpSuccess } from "@/utils/https";
-import { useCookies } from "react-cookie";
 
 const DEFAULT_API_RESPONSE = {};
 

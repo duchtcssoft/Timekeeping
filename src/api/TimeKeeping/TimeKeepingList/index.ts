@@ -15,5 +15,4 @@ export const useGetTimeKeepingList = buildXHR<TRequest, TResponse>({
   url: "/api/timekeeping/history-timekeeping",
   method: "GET",
   headers: { Authorization: `Bearer ${token}` },
-
 });
