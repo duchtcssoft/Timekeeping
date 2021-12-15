@@ -5,7 +5,7 @@ import {
 } from "antd";
 import "antd/dist/antd.css";
 import { useState, useEffect } from "react";
-import AdressMap from "../AddressMap";
+// import AdressMap from "../AddressMap";
 import FormEdit from "../FormEdit";
 // import axios from "axios";
 import styles from "./Editoffices.module.scss";

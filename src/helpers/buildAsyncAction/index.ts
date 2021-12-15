@@ -35,24 +35,31 @@ export const buildAsyncAction = <
   TResponse = AnyObject,
   TRequestParams = AnyObject,
 >(
-  configs: TAsyncActionConfigs<TRequestData, TResponse, TRequestParams>,
+  configs: TAsyncActionConfigs<
+    TRequestData,
+    TResponse,
+    TRequestParams
+  >,
 ) => () => {
   const dispatch = useDispatch();
   const { LOADING_LABEL, SUCCESS_LABEL, ERROR_LABEL, XHRHook } = configs;
   const { execute: executeXHR, isLoading, response, error } = XHRHook();
 
   const executeAction = (
-    props: TCallbackProps<TRequestData, TRequestParams, TResponse>,
+    props: TCallbackProps<
+      TRequestData,
+      TRequestParams,
+      TResponse
+    >,
   ) => {
-    const { data, params, cbSuccess, cbError } = props;
+    const { cbSuccess, cbError, ...restProps } = props;
 
     dispatch({
       type: LOADING_LABEL,
     });
 
     executeXHR({
-      data,
-      params,
+      ...restProps,
       cbSuccess: (responseData) => {
         dispatch({
           type: SUCCESS_LABEL,

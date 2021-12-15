@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/comma-dangle */
 // libs
 import { AxiosError } from "axios";
 
@@ -20,12 +21,13 @@ type THttpMethod =
 
 export type TApiConfigs = {
   /** API URL */
-  url: string;
+  url?: string;
   /** http method */
   method: THttpMethod;
 };
 
 export type TCallbackProps<TRequestData, TRequestParams, TResponse> = {
+  url?: string;
   data?: TRequestData;
   params?: TRequestParams;
   cbSuccess?: (responseData: TResponse) => void;
@@ -35,7 +37,7 @@ export type TCallbackProps<TRequestData, TRequestParams, TResponse> = {
 export type TAsyncActionConfigs<
   TRequestData = AnyObject,
   TResponse = AnyObject,
-  TRequestParams = AnyObject,
+  TRequestParams = AnyObject
 > = {
   /** Labels for save data in Redux Store */
   LOADING_LABEL: string;

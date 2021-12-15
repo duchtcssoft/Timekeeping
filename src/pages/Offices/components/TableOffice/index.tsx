@@ -1,5 +1,5 @@
 // libs
-import { TResponseOffice, useDeleteOffice, useGetOfficeAction } from "@/api/requestOffices";
+import { TResponseOffice, useDeleteOffice, useDeleteOfficeAction, useGetOfficeAction } from "@/api/requestOffices";
 import {
   Button, Table, Modal,
 } from "antd";
@@ -9,60 +9,57 @@ import EditOffices from "../EditOffices";
 import styles from "./Listmanager.module.scss";
 import { useStore } from "@/hooks/useStore";
 import axios from "axios";
-import { TOKEN } from "@/constants/BaseURL/Config";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-// const offices = [
-//   {
-//     name: "csss",
-//     address: "",
-//     province_id: "",
-//     startworking: "",
-//     stopworking: "",
-//   },
-// ];
+import { IListOffice } from "./type";
+import { setOfficeList } from "@/redux/actions/offices";
 
-export default function TableOffice() {
-  const dataOffice = useStore("Office", "pageDataReducer");
-  const data = dataOffice.listOffice;
-  // console.log(abc);
-  const { execute } = useGetOfficeAction();
-  // const { execute } = useDeleteOffice(id);
+export type Props = {
+  office?: IListOffice[]
+};
 
-  // const { execute } = useDeleteOffice(idOffice);
-
+export default function TableOffice(props: Props) {
+  const { office } = props;
+  const { execute: getListOffice } = useGetOfficeAction();
+  const dispatch = useDispatch();
   const columns = [
     {
-      title: "Name",
+      title: "Tên",
       dataIndex: "name",
     },
     {
-      title: "Address",
+      title: "Địa chỉ",
       dataIndex: "address",
       key: "address",
     },
     {
-      title: "Province_id",
+      title: "Mã tỉnh",
       dataIndex: "province_id",
     },
     {
-      title: "Start Working",
+      title: "Giờ bắt đầu",
       dataIndex: "starting_hour",
     },
     {
-      title: "Stop Working",
+      title: "Giờ kết thúc",
       dataIndex: "ending_hour",
     },
     {
       title: "Actions",
-      render: (office: any) => (
-        // dataListOffice.map((item: any) => dataListOffice.map((item: any) =>
+      render: (office: IListOffice) => (
         <>
-          {console.log("office:office", office)}
-          <EditOffices />
           <Button
             type="default"
-            onClick={() => onHandleDele(office.id)}
+            onClick={() => onHandleEdit(office)}
+            shape="default"
+            size="small"
+            style={{ color: "blue", marginLeft: 12 }}
+          >
+            Edit
+          </Button>
+          <Button
+            type="default"
+            onClick={() => onHandleDele(office)}
             shape="default"
             size="small"
             style={{ color: "red", marginLeft: 12 }}
@@ -74,39 +71,38 @@ export default function TableOffice() {
       ),
     },
   ];
-  // const idOffice = (dataOffice.listOffice.map((item: any) => item.id));
-  const dataListOffice = dataOffice.listOffice;
+  const { execute: deleteOffice, isLoading: loadingOffice } = useDeleteOfficeAction();
 
-  const onHandleDele = (idOffice: any) => {
-    console.log(dataListOffice);
+  const onHandleDele = (Office: IListOffice) => {
     Modal.confirm({
       title: "bạn có chắc chắn muốn xoá chi nhánh này không?",
       okType: "danger",
       onOk: () => {
-        console.log(idOffice);
-        axios({
-          method: "delete",
-          url: `http://timekeeping.cssdemoco.com/api/offices/${idOffice}`,
-          headers: {
-            Authorization: `Bearer ${TOKEN}`,
+        deleteOffice({
+          url: `api/offices/${Office.id}`,
+          cbSuccess: (res: any) => {
+            getListOffice(
+              {
+                cbSuccess: (res: any) => {
+                  dispatch(setOfficeList(res.data));
+                },
+              },
+              );
           },
-        }).then(res => console.log("res", res),
-
-        ).then(() => execute({}))
-          .catch(err => console.log(err.data),
-        );
+        });
       },
     });
   };
 
-  const handleEdit = () => {
+  const onHandleEdit = (Office: IListOffice) => {
+    console.log("idOffice-edit", Office.id);
   };
-
   return (
     <div className={styles.listtable}>
       <Table
+        rowKey="id"
         columns={columns}
-        dataSource={data}
+        dataSource={office}
       />
     </div>
   );

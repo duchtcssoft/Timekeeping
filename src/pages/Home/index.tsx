@@ -1,5 +1,4 @@
 // libs
-import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 // hooks
 import { useRouter } from "@/hooks/router/useRouter";
@@ -9,9 +8,10 @@ import { updateMagicNumber } from "@/redux/actions/example";
 // others
 import { notify } from "@/utils/notify";
 import { ROUTES } from "@/constants/routers";
+
+// import MainLayout from "@/components/Layout/Layout";
+import TimeKeeping from "./TimeKeeping/TimeKeeping";
 import MainLayout from "@/components/Layout/Layout";
-import Offices from "../Offices";
-// TODO: talk
 
 /**
  * Home
@@ -23,7 +23,7 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <Offices />
+      <h1>Welcome to homepage</h1>
     </MainLayout>
   );
 }

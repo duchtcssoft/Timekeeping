@@ -1,6 +1,6 @@
 // libs
 
-import { useAddOffice } from "@/api/requestOffices";
+import { useAddOffice, usePostOfficeAction } from "@/api/requestOffices";
 import "@/styles/index.css";
 import { PlusOutlined } from "@ant-design/icons";
 import {
@@ -9,7 +9,7 @@ import {
 } from "antd";
 import "antd/dist/antd.css";
 import { useState, useEffect } from "react";
-import AdressMap from "../AddressMap";
+// import AdressMap from "../AddressMap";
 import FormCreate from "../FormCreate";
 
 interface PropsValue {
@@ -24,10 +24,10 @@ interface PropsValue {
 
 export default function CreateOffices() {
   const [visible, setVisible] = useState(false);
-  const { execute } = useAddOffice();
+  const { execute: addOffice, isLoading: loadingOffice } = usePostOfficeAction();
 
   const handleAdd = (values: PropsValue) => {
-    execute({
+    addOffice({
       data: {
         name: values.name,
         address: values.address,

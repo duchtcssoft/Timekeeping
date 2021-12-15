@@ -6,37 +6,25 @@ import {
   Form,
 } from "antd";
 import styles from "./Formcreate.module.scss";
-import { useState, useEffect } from "react";
-import { useAddOffice, useGetOfficeAction, useRequestOffice } from "@/api/requestOffices";
-import { useDispatch } from "react-redux";
 
 interface Props {
   handleFinish: (value: any) => void;
   onCancel: () => void;
   form?: FormInstance;
 }
-
+const validateMessages = {
+  required: "Tên không được để trống. Mời bạn nhập thông tin!",
+  // types: {
+  //   address: " is not a valid email!",
+  //   number: " is not a valid number!",
+  // },
+  // number: {
+  //   range: " must be betweenand ",
+  // },
+};
 export default function FormCreate(props: Props) {
   const { handleFinish, onCancel, form } = props;
-  const { execute } = useAddOffice();
-  const { execute: getListOffice, isLoading, response: offices } = useGetOfficeAction();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    getListOffice({});
-  }, []);
-  // const handleFinish = (values: any) => {
-  //   execute({
-  //     data: {
-  //       name: values.name,
-  //       address: values.address,
-  //       province_id: values.provinceId,
-  //       latitude: values.latitude,
-  //       longitude: values.longitude,
-  //       starting_hour: values.startHour,
-  //       ending_hour: values.endHour,
-  //     },
-  //   });
-  // };
+
   return (
     <Form
       // form={form}
@@ -45,12 +33,14 @@ export default function FormCreate(props: Props) {
       labelCol={{ span: 0 }}
       wrapperCol={{ span: 24 }}
       layout="horizontal"
+      validateMessages={validateMessages}
     >
       <Form.Item
         wrapperCol={{ span: 24 }}
         label="Tên"
         name="name"
         className={styles.form_item}
+        rules={[{ required: true }]}
       >
         <Input size="large" />
       </Form.Item>
@@ -106,8 +96,8 @@ export default function FormCreate(props: Props) {
         </Form.Item>
       </div>
       <Form.Item>
-        <Button htmlType="submit" type="primary" style={{ marginRight: 12 }}>Add</Button>
-        <Button onClick={onCancel} type="primary">Cancel</Button>
+        <Button htmlType="submit" type="primary" style={{ marginRight: 12 }}>Thêm</Button>
+        <Button onClick={onCancel} type="primary">Huỷ bỏ</Button>
       </Form.Item>
     </Form>
   );

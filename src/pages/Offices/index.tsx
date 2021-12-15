@@ -40,8 +40,7 @@
 // }
 
 // libs
-import { Button } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // hooks
 import { useRouter } from "@/hooks/router/useRouter";
 import { useStore } from "@/hooks/useStore";
@@ -55,15 +54,16 @@ import classes from "./Signin.module.scss";
 import { useState, useEffect } from "react";
 import { useAddOffice } from "@/api/requestOffices";
 import ContentOffices from "./mains/ContentOffices";
+// import { RootState } from "@/redux/store";
 
 export default function Offices() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { listOffice } = useStore("Office", "pageDataReducer");
-
   return (
     <div className={classes.wrapper}>
-      <ContentOffices />
+      <MainLayout>
+        <ContentOffices />
+      </MainLayout>
     </div>
   );
 }

@@ -6,6 +6,7 @@
       "backgroundColor": "#DF7F2F"
     }
   ],
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "editor.tabSize": 2,
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "javascript.validate.enable": false,
