@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/comma-dangle */
 // libs
 import { AxiosError } from "axios";
 
@@ -20,31 +21,23 @@ type THttpMethod =
 
 export type TApiConfigs = {
   /** API URL */
-  url: string;
+  url?: string;
   /** http method */
   method: THttpMethod;
 };
-// FIXME: Why there is a lot of TRequestHeaders here, should delete it or not?
-// eslint-disable-next-line @typescript-eslint/comma-dangle
-export type TCallbackProps<
-  TRequestData,
-  TRequestParams,
-  TResponse,
-  TRequestHeaders
-> = {
+
+export type TCallbackProps<TRequestData, TRequestParams, TResponse> = {
+  url?: string;
   data?: TRequestData;
   params?: TRequestParams;
-  headers?: TRequestHeaders;
   cbSuccess?: (responseData: TResponse) => void;
   cbError?: (errors: AxiosError) => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/comma-dangle
 export type TAsyncActionConfigs<
   TRequestData = AnyObject,
   TResponse = AnyObject,
-  TRequestParams = AnyObject,
-  TRequestHeaders = AnyObject
+  TRequestParams = AnyObject
 > = {
   /** Labels for save data in Redux Store */
   LOADING_LABEL: string;
@@ -55,12 +48,7 @@ export type TAsyncActionConfigs<
   /** Async Hook built by function buildXHR */
   XHRHook: () => {
     execute: (
-      cbProps?: TCallbackProps<
-        TRequestData,
-        TRequestParams,
-        TResponse,
-        TRequestHeaders
-      >
+      cbProps?: TCallbackProps<TRequestData, TRequestParams, TResponse>
     ) => Promise<void>;
     isLoading: boolean;
     response: TResponse | null;

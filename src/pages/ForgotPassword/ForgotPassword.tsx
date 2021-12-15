@@ -1,4 +1,4 @@
-import { useRequestForgotPassword } from "@/api/ForgotPassword";
+import { useRequestForgotPassword } from "@/api/Auth/ForgotPassword";
 import ReactHookForm from "@/providers/ReactHookForm";
 import { schemaForgotPassword } from "@/react-hook-form/validations/ForgotPassword";
 import { message } from "antd";

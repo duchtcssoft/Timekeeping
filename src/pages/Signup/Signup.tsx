@@ -1,6 +1,6 @@
 // components
 // forms
-import { useRequestSignup } from "@/api/Signup";
+import { useRequestSignup } from "@/api/Auth/Signup";
 import Banner from "@/components/banner/Banner";
 import { ROUTES } from "@/constants/routers";
 import ReactHookForm from "@/providers/ReactHookForm";
@@ -35,9 +35,9 @@ export default function Signup() {
       },
       cbError: (err) => {
         if (err.response) {
-          // console.log("response: ", err.response.data.errors.email[0]);
+          console.log("response: ", err.response.data);
           // FIXME:What is this, API return error from email[0], right? What about other error like (Network error)
-          message.error(err.response.data.errors.email[0]);
+          // message.error(err.response.data.errors.email[0]);
 
           // client received an error response (5xx, 4xx)
         } else if (err.request) {

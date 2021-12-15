@@ -7,4 +7,7 @@ export const ROUTES = {
   FORGOT_PASSWORD: "/forgotpassword",
   CHANGE_PASSWORD: "/changepassword",
   TIME_KEEPING: "/timekeeping",
+  OFFICE: "/offices",
+  CHECK_IN: "/checkin",
+  CHECK_OUT: "/checkout",
 };

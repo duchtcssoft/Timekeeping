@@ -1,6 +1,7 @@
 // routes
 import { ROUTES } from "@/constants/routers";
 // pages
+import Offices from "@/pages/Offices";
 import ChangePassword from "@/pages/ChangePassword/ChangePassword";
 import ForgotPassword from "@/pages/ForgotPassword/ForgotPassword";
 // pages
@@ -41,6 +42,11 @@ const appRoutes = [
     path: ROUTES.TIME_KEEPING,
     exact: true,
     component: TimeKeeping,
+  },
+  {
+    path: ROUTES.OFFICE,
+    exact: true,
+    component: Offices,
   },
 ];
 

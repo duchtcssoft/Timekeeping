@@ -3,13 +3,13 @@ import { Suspense } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Provider as ReduxProvider } from "react-redux";
 // routes
-import appRoutes from "@/routers";
 // others
 import { store } from "@/redux/store";
 // FIXME: Use another way to Redirect user if not logged in, delete import ROUTES and Home below
 import { ROUTES } from "./constants/routers";
 import Home from "./pages/Home";
 import "@/styles/index.css";
+import appRoutes from "./routers";
 
 /**
  * App
@@ -37,8 +37,7 @@ export default function App() {
                   <Home />
                 ) : (
                   <Redirect to={ROUTES.SIGN_IN} />
-                )
-              }
+                )}
             />
           </Switch>
         </ReduxProvider>
