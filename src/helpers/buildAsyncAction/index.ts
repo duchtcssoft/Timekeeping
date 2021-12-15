@@ -46,13 +46,13 @@ export const buildAsyncAction = <
   const { execute: executeXHR, isLoading, response, error } = XHRHook();
 
   const executeAction = (
-    props: TCallbackProps<
+    props?: TCallbackProps<
       TRequestData,
       TRequestParams,
       TResponse
     >,
   ) => {
-    const { cbSuccess, cbError, ...restProps } = props;
+    const { cbSuccess, cbError, ...restProps } = props || {};
 
     dispatch({
       type: LOADING_LABEL,

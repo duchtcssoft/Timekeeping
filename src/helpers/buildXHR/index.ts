@@ -93,6 +93,7 @@ export const buildXHR = <
   return {
     execute,
     isLoading,
+    // TODO: Force add default value for response in /src/api
     response: (response || DEFAULT_API_RESPONSE) as ShallowExpand<TResponse>,
     error,
   };
